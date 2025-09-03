@@ -9,10 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@sentry/nextjs": "^10.8.0",
+    "clsx": "^2.1.1",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -22,6 +27,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
