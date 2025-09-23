@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import Script from "next/script";
+import "./global.css";
+
 import { effra, taho } from "@/fonts";
 
 const geistSans = Geist({
@@ -66,9 +68,13 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
-        className={`${effra.variable} ${taho.variable} ${geistSans.variable} ${geistMono.variable}  antialiased`}
+        className={`${effra.variable} ${taho.variable} ${geistSans.variable} ${geistMono.variable}  antialiased `}
       >
         {children}
+        <Script
+          src="https://cookiechimp.com/widget/VWGtgDZ.js"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ export const Bounded = forwardRef<HTMLElement, BoundedProps<ElementType>>(
     return (
       <Comp
         ref={ref}
-        className={cn("mx-auto w-full max-w-7xl px-6", className)}
+        className={cn("mx-auto w-full px-8 container", className)}
         {...props}
       >
 

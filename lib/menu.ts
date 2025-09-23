@@ -1,14 +1,18 @@
 import type { MenuItem } from "@/types/menu"
 
 export const MENU_ITEMS: MenuItem[] = [
-  { label: "Insights", href: "/about" },
+  { label: "About", href: "/about" },
+  { label: "Insights", href: "/insights" },
   { label: "Services", href: "/services" ,     children: [
-      { label: "Careers", href: "/careers" },
-      { label: "Contact", href: "/contact" },
+      { label: "Corporate Support Services", href: "/careers" },
+      { label: "Tax Services", href: "/contact" },
+      { label: "Audit & Assurance Services", href: "/contactws" },
+      { label: "Advisory Services", href: "/as" },
+      { label: "Company Secretarial Services", href: "/css" },
     ],},
-  { label: "Events", href: "/blog" },
+  { label: "Events", href: "/events" },
   {
-    label: "Careere",
+    label: "Careers",
     href: "/careers",
   },
 ]

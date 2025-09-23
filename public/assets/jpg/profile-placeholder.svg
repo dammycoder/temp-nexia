@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="552" viewBox="0 0 500 552">
+  <defs>
+    <clipPath id="clip-profile-placeholder">
+      <rect width="500" height="552"/>
+    </clipPath>
+  </defs>
+  <g id="profile-placeholder" clip-path="url(#clip-profile-placeholder)">
+    <rect width="500" height="552" fill="#b5b5b5"/>
+    <g id="Group_403" data-name="Group 403" transform="translate(-37.924 -6)">
+      <g id="Group_401" data-name="Group 401" transform="translate(89 80)">
+        <g id="Group_400" data-name="Group 400" transform="translate(0 0)">
+          <ellipse id="Ellipse_36" data-name="Ellipse 36" cx="199" cy="202" rx="199" ry="202" transform="translate(-0.076)" fill="#f4f4f4"/>
+        </g>
+      </g>
+      <g id="Group_402" data-name="Group 402" transform="translate(181.284 177.411)">
+        <path id="Vector" d="M150.417,153.648a71.712,71.712,0,0,1-12.751,11.311c-32.4,22.473-77.179,14.637-99.831-17.52L12.935,112.1A71.186,71.186,0,0,1,30.485,12.821c32.4-22.473,77.179-14.637,99.831,17.52l24.9,35.336a71.548,71.548,0,0,1,11.776,28.092,29.9,29.9,0,0,1-6.825,6.505,31.3,31.3,0,0,1-24.3,4.953,38.381,38.381,0,0,0-7.05-21.143l-24.9-35.336a39.621,39.621,0,0,0-54.9-9.61,39.109,39.109,0,0,0-9.676,54.557l24.9,35.336a39.509,39.509,0,0,0,40.727,15.82,80.75,80.75,0,0,0,45.453,8.8Z" transform="translate(0 31.709)" fill="#b5b5b5"/>
+        <path id="Vector-2" data-name="Vector" d="M129.232,30.411l24.9,35.336a71.036,71.036,0,0,1-17.626,99.208c-32.4,22.473-77.179,14.637-99.831-17.52L11.776,112.1A71.549,71.549,0,0,1,0,84.006,29.9,29.9,0,0,1,6.825,77.5a31.3,31.3,0,0,1,24.3-4.953,38.381,38.381,0,0,0,7.05,21.143l24.9,35.336a39.621,39.621,0,0,0,54.9,9.61,39.109,39.109,0,0,0,9.676-54.557l-24.9-35.336a39.509,39.509,0,0,0-40.727-15.82,80.5,80.5,0,0,0-45.378-8.8,71.969,71.969,0,0,1,112.581,6.284Z" transform="translate(46.837 0)" fill="#b5b5b5"/>
+      </g>
+    </g>
+  </g>
+</svg>
