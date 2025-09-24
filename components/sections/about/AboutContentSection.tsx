@@ -9,9 +9,8 @@ type about = {
   content: string;
 }
 
-
 type Props ={
-  data: about | unknown
+  data: about;
 }
 
 const AboutContentSection = ({data}:Props) => {

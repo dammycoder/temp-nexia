@@ -6,7 +6,7 @@ interface Props{
     size?:number
 }
 
-const LinkedInIcon = ({className, size}: Props) => {
+const LinkedInIcon = ({className}: Props) => {
   return (
     <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn('cursor-pointer text-white', className)}>
     <g clipPath="url(#clip0_1798_10279)">

@@ -55,3 +55,16 @@ export function flattenAttributes(data: any): any {
 
   return data;
 }
+
+
+
+ export  const renderDescription = (description: any[]) => {
+    return description
+      .map((block) => {
+        if (block.type === "paragraph") {
+          return `<p>${block.children.map((child: any) => child.text).join("")}</p>`;
+        }
+        return "";
+      })
+      .join("");
+  };

@@ -34,7 +34,6 @@ const HeroSection = ({data}:Props) => {
       }
     );
 
-    // Add parallax effect to background image
     const bgImage = heroRef.current.querySelector('img');
     if (bgImage) {
       animations.parallax(bgImage, -5);

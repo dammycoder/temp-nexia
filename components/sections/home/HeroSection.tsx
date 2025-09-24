@@ -34,9 +34,7 @@ const HeroSection = ({ data }: Props) => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [progress, setProgress] = useState(0);
-  const progressIntervalRef = useRef<NodeJS.Timeout>();
-
-  // Initialize autoplay plugin with useRef to prevent re-creation on re-renders
+const progressIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const plugin = useRef(
     Autoplay({ 
       delay: 5000, 
@@ -159,7 +157,7 @@ const HeroSection = ({ data }: Props) => {
       />
       
       {/* White Container with Carousel */}
-      <div className="hero-content relative z-10 flex w-full h-full lg:h-7/10 lg:w-5/10 items-center rounded-tr-4xl bg-white lg:px-12 pb-3">
+      <div className="hero-content relative z-10 flex w-full h-full lg:h-7/10 lg:w-5/10 items-center rounded-tr-4xl bg-white pb-3">
         <Carousel
           setApi={setApi}
           plugins={data.length > 1 ? [plugin.current] : []}
@@ -173,7 +171,7 @@ const HeroSection = ({ data }: Props) => {
           <CarouselContent>
             {data.map((item, index) => (
               <CarouselItem key={index}>
-                <Bounded className="max-auto container flex flex-col gap-4 lg:px-12 py-4">
+                <Bounded className="flex flex-col gap-4 py-4">
                   <p className="text-xl text-nexia-dark-teal-100">
                     {item.description || "TRI Conference Dubai 25th-27th September"}
                   </p>

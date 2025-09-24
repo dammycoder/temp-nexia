@@ -3,7 +3,6 @@
 import React, { useState, useCallback } from "react";
 import { Menu, ChevronDown, X, SearchIcon } from "lucide-react";
 import Link from "next/link";
-import { MENU_ITEMS } from "@/lib/menu";
 import Logo from "@/components/atoms/a-logo";
 import { Bounded } from "@/components/bouned";
 import { useSelectedLayoutSegment } from "next/navigation";
@@ -15,17 +14,38 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-interface HeaderData {
-  header?: {
-    link?: unknown;
+type HeaderData = {
+  id: number;
+  logoLink: {
+    id: number;
+    image: { data: { attributes: { url: string } } };
+    href: string;
   };
-}
-
+  link: Array<{
+    id: number;
+    href: string;
+    text: string;
+    external: boolean;
+    subLink:[{
+    id: number;
+    href: string;
+    title: string;
+    external: boolean;
+    }]
+  }>;
+  cta: {
+    id: number;
+    href: string;
+    text: string;
+    external: boolean;
+  };
+};
 interface HeaderProps {
   data?: HeaderData;
 }
 
 export function Header({ data }: HeaderProps) {
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const segment = useSelectedLayoutSegment();
 
@@ -55,8 +75,8 @@ export function Header({ data }: HeaderProps) {
   );
 
   return (
-    <header className="w-full bg-nexia-dark-teal-100 font-effra">
-      <Bounded className="container mx-auto flex items-center justify-between lg:py-4">
+    <header className="w-full bg-nexia-dark-teal-100 font-effra relative z-10">
+      <Bounded className="flex items-center justify-between lg:py-4">
         {/* Logo */}
         <Logo />
         {/* Desktop Nav */}
@@ -77,7 +97,7 @@ export function Header({ data }: HeaderProps) {
             </Link>
           </div>
           <nav aria-label="Global" className="hidden gap-6 lg:flex">
-            {MENU_ITEMS.map((item) => (
+            {data?.link?.map((item) => (
               <div key={item.href} className="group relative">
                 <Link
                   href={item.href}
@@ -87,25 +107,25 @@ export function Header({ data }: HeaderProps) {
                       : ""
                   }`}
                 >
-                  {item.label}
-                  {item.children && (
+                  {item.text}
+                  {item?.subLink?.length > 0 && (
                     <ChevronDown className="h-5 w-5 text-nexia-light-teal-100" />
                   )}
                 </Link>
 
-                {item.children && (
+                {item.subLink?.length>0 && item?.subLink && (
                   <ul className="invisible absolute left-0 z-20 mt-2 w-[250px] rounded-lg bg-white opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 first:py-3">
-                    {item.children.map((child) => (
+                    {item.subLink.map((child) => (
                       <li key={child.href}>
                         <Link
                           href={child.href}
                           className={`block px-4 py-2 text-lg font-semibold text-nexia-dark-teal-80 transition-all hover:text-nexia-light-teal-80 ${
                             isActiveLink(child.href)
-                              ? "border-b-4 border-nexia-light-teal-100"
+                              ? ""
                               : ""
                           }`}
                         >
-                          {child.label}
+                          {child.title}
                         </Link>
                       </li>
                     ))}
@@ -139,53 +159,52 @@ export function Header({ data }: HeaderProps) {
           </nav>
         </div>
 
-    {/* Mobile Menu Toggle */}
-<div className="flex items-center gap-3 lg:hidden">
-  {/* Hamburger / Close button */}
-  <button
-    className="text-gray-700"
-    aria-label="Toggle menu"
-    onClick={toggleMobileMenu}
-  >
-    {mobileOpen ? (
-      <X className="h-6 w-6 text-white" />
-    ) : (
-      <Menu className="h-7 w-7 text-white" />
-    )}
-  </button>
+        {/* Mobile Menu Toggle */}
+        <div className="flex items-center gap-3 lg:hidden">
+          {/* Hamburger / Close button */}
+          <button
+            className="text-gray-700"
+            aria-label="Toggle menu"
+            onClick={toggleMobileMenu}
+          >
+            {mobileOpen ? (
+              <X className="h-6 w-6 text-white" />
+            ) : (
+              <Menu className="h-7 w-7 text-white" />
+            )}
+          </button>
 
-  {/* Search only shows when menu is closed */}
-  {!mobileOpen && (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button
-          aria-label="Search"
-          className="cursor-pointer text-white transition-all hover:text-nexia-light-teal-100"
-        >
-          <SearchIcon className="h-6 w-6" />
-        </button>
-      </DialogTrigger>
+          {/* Search only shows when menu is closed */}
+          {!mobileOpen && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  aria-label="Search"
+                  className="cursor-pointer text-white transition-all hover:text-nexia-light-teal-100"
+                >
+                  <SearchIcon className="h-6 w-6" />
+                </button>
+              </DialogTrigger>
 
-      <DialogContent>
-        <DialogTitle></DialogTitle>
-        <div className="flex flex-col gap-4 py-3">
-          <input
-            type="text"
-            placeholder="Type your search here...."
-            className="block w-full border border-nexia-dark-teal-100 p-3"
-          />
+              <DialogContent>
+                <DialogTitle></DialogTitle>
+                <div className="flex flex-col gap-4 py-3">
+                  <input
+                    type="text"
+                    placeholder="Type your search here...."
+                    className="block w-full border border-nexia-dark-teal-100 p-3"
+                  />
 
-          <Link href="/test" className="flex justify-center">
-            <button className="mx-auto w-fit rounded-md bg-nexia-light-teal-100 px-6 py-2 text-white">
-              Search
-            </button>
-          </Link>
+                  <Link href="/test" className="flex justify-center">
+                    <button className="mx-auto w-fit rounded-md bg-nexia-light-teal-100 px-6 py-2 text-white">
+                      Search
+                    </button>
+                  </Link>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
-      </DialogContent>
-    </Dialog>
-  )}
-</div>
-
       </Bounded>
 
       {/* Mobile Nav */}
@@ -194,9 +213,9 @@ export function Header({ data }: HeaderProps) {
           aria-label="Mobile"
           className="flex flex-col gap-4 border-t bg-white py-4 lg:hidden"
         >
-          {MENU_ITEMS.map((item) => (
+          {data?.link?.map((item) => (
             <Bounded key={item.href}>
-              {item.children ? (
+              {item?.subLink?.length>0 ? (
                 <button
                   type="button"
                   onClick={() => toggleSubmenu(item.href)}
@@ -206,9 +225,11 @@ export function Header({ data }: HeaderProps) {
                       : ""
                   }`}
                 >
-                  {item.label}
+                  {item.text}
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform ${openSubmenus[item.href] ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform ${
+                      openSubmenus[item.href] ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
               ) : (
@@ -220,23 +241,23 @@ export function Header({ data }: HeaderProps) {
                       : ""
                   }`}
                 >
-                  {item.label}
+                  {item.text}
                 </Link>
               )}
 
-              {item.children && openSubmenus[item.href] && (
+              {item.subLink && openSubmenus[item.href] && (
                 <ul className="mt-2 ml-4 space-y-2">
-                  {item.children.map((child) => (
+                  {item.subLink.map((child) => (
                     <li key={child.href}>
                       <Link
                         href={child.href}
                         className={`block text-nexia-dark-teal-100 transition hover:text-nexia-light-teal-100 ${
                           isActiveLink(child.href)
-                            ? "border-l-4 border-nexia-dark-teal-100 pl-2 font-semibold"
+                            ? " pl-2 font-semibold"
                             : ""
                         }`}
                       >
-                        {child.label}
+                        {child.title}
                       </Link>
                     </li>
                   ))}

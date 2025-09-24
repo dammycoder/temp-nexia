@@ -1,4 +1,12 @@
-import type { MenuItem } from "@/types/menu"
+export type MenuItem ={
+  label:string;
+  href:string;
+  children?:{
+    label:string;
+    href:string;
+  }[]
+}
+
 
 export const MENU_ITEMS: MenuItem[] = [
   { label: "About", href: "/about" },

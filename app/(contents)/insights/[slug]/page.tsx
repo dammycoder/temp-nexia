@@ -31,7 +31,6 @@ const insight = await strapiFetch<{
 
 
 const insightData = insight.data[0];
-console.log("na the data be this", insightData)
 
   return (
     <div className="">

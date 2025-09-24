@@ -12,7 +12,7 @@ type about = {
 
 
 type Props ={
-  data: about | unknown
+  data: about
 }
 
 const InternationalAffiliationSection = ({data}:Props) => {

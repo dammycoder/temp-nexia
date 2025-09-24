@@ -111,7 +111,7 @@ export const animations = {
   },
 
   // Parallax effect
-  parallax: (element: gsap.TweenTarget, yPercent = -50, options = {}) => {
+  parallax: (element: gsap.DOMTarget, yPercent = -50, options = {}) => {
     return gsap.to(element, {
       yPercent,
       ease: "none",
@@ -124,7 +124,6 @@ export const animations = {
       },
     });
   },
-
   // Hover animations
   hoverScale: (element: HTMLElement, scale = 1.05) => {
     const handleMouseEnter = () => {

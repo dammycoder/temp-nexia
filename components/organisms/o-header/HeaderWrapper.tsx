@@ -1,23 +1,31 @@
-import { getStrapiUrl } from "@/lib/utils";
-import qs from "qs";
+import { strapiFetch } from "@/lib/strapi";
 import { Header } from "./index";
+import { HeaderData } from "@/types/menu";
 
 async function loadHeaderData() {
-  try {
-    const { fetchData } = await import('@/lib/fetch');
-    const path = "/api/global";
-    const baseUrl = getStrapiUrl();
-
-    const query = qs.stringify({});
-    const url = new URL(`${baseUrl}${path}`);
-    url.search = new URLSearchParams(query).toString();
-
-    const data = await fetchData(url.href);
-    return data;
-  } catch (error) {
-    console.error('Failed to load header data:', error);
-    return null;
-  }
+  const globalData = await strapiFetch<{
+    data: {
+      header: HeaderData;
+    };
+  }>("/api/global", {
+    query: {
+      populate: {
+        header: {
+          populate: {
+            logoLink: {
+              populate: ["image"]
+            },
+            link: {
+              populate: ["subLink"]
+            },
+            cta: true
+          }
+        }
+      },
+    },
+  });
+  
+  return globalData.data.header;
 }
 
 export default async function HeaderWrapper() {

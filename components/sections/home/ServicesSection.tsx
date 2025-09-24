@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useRef } from "react";
@@ -21,7 +22,7 @@ export interface StrapiImageFormat {
   url: string;
 }
 
-interface Service {
+type Service = {
   id: number;
   title: string;
   href: string;
@@ -54,10 +55,10 @@ interface Service {
 }
 
 interface ServicesSectionProps {
-    data:{ 
-      id:string;
-      services: Service[]
-    } | unknown
+    data?:{ 
+      id?: string | number;
+      services: Service[];
+    } 
 }
 
 const ServicesSection = ({ data }: ServicesSectionProps) => {
@@ -80,7 +81,6 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
   }, []);
 
 
-  console.log("mehn i want to sleep", data?.services);
   return (
     <Bounded ref={servicesRef} id="services" className="py-8">
       <div className="container grid w-fit auto-rows-auto grid-cols-1 gap-5 py-8 md:grid-cols-2 lg:grid-cols-3">

@@ -18,7 +18,6 @@ type UsefulLink = {
 
 const UsefulLinksSection = ({data}:Props) => {
 
-  console.log("are you really useful", data)
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 

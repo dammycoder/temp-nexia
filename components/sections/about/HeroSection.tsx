@@ -15,9 +15,13 @@ interface Props {
 const HeroSection = ({title, description}: Props) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (!heroRef.current || !contentRef.current) return;
+    if (panelRef.current) animations.fadeInRight(panelRef.current);
+
 
     scrollAnimations.onScroll(
       contentRef.current,
@@ -39,23 +43,30 @@ const HeroSection = ({title, description}: Props) => {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative flex lg:h-[70vh] items-end">
+    <div ref={heroRef} className="relative flex  lg:h-[70vh] items-center lg:items-end">
       {/* Background Image */}
       <Image
         src="/assets/jpg/hero-image.jpg"
         alt="About Us Background"
         fill
         priority
+        className="hidden lg:block"
       />
 
+
+<div ref={panelRef}  className="hidden lg:block absolute bottom-0  bg-white h-full lg:h-5/10 w-full lg:w-1/2 z-0 rounded-tr-4xl">
+
+</div>
+
       {/* Content */}
-      <div 
+      <Bounded
         ref={contentRef}
-        className="relative z-10 container lg:px-12 flex h-3/5 w-full py-8 lg:w-1/2 items-center justify-center rounded-tr-4xl bg-white text-nexia-dark-teal-100"
+        className="relative z-10 flex  w-full   lg:bg-transparent py-8  items-center  text-nexia-dark-teal-100"
       >
-        <Bounded className="container mx-auto flex w-full flex-col gap-3 lg:px-12">
+
+        <div className="flex w-full lg:w-1/2 flex-col gap-3">
           <h1 className="text-2xl">{title}</h1>
-          <p className="text-4xl font-bold">
+          <p className="text-4xl font-bold w-9/10">
            {description}
           </p>
           <button
@@ -64,8 +75,8 @@ const HeroSection = ({title, description}: Props) => {
           >
             Contact Us
           </button>
-        </Bounded>
-      </div>
+        </div>
+      </Bounded>
     </div>
   );
 };

@@ -32,7 +32,7 @@ interface TeamMember {
 }
 
 interface Stat {
-  name:string;
+  title:string;
   figure:string;
 }
 
@@ -42,12 +42,21 @@ const aboutPage = await strapiFetch<{
     id: number;
       title: string;
       descrtiption: string;
-      about: unknown;
+      about: {
+        title:string;
+        content:string;
+      };
       cta: unknown;
-      internationalAffiliation: unknown;
-      OurRoot: unknown[];
+      internationalAffiliation: {
+        title:string;
+        content:string;
+      };
+      OurRoot: {
+        title:string;
+        content:string;
+      };
       teamMembers:unknown;
-  } | null;
+  }
 }>("/api/about-page", {
   query: {
     populate: {
@@ -74,7 +83,6 @@ const stats = await strapiFetch<{data: Stat[]}>("/api/stats", {
 const pageData = aboutPage?.data;
 const TeamData = teamMembers?.data;
 const statsData =  stats?.data;
-
 
 
   return (

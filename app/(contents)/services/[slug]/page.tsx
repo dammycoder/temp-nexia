@@ -50,7 +50,6 @@ const fetchServiceBySlug = async (slug: string) => {
     },
   });
 
-  console.log("oti por port", response)
 
   return response.data[0] || null;
 };

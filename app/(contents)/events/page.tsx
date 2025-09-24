@@ -1,57 +1,100 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Bounded } from "@/components/bouned";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { strapiFetch } from "@/lib/strapi";
+import EventsHero from "@/components/sections/events/EventsHero";
+import EventsCategorySection from "@/components/sections/events/EventsCategorySection";
 
 export const metadata: Metadata = {
-  title:
-    "Events | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+  title: "Events | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
 };
 
-const page = () => {
-  return <section id="events-home">
-      <div className="relative flex h-[70vh] items-end">
-        {/* Background Image */}
-        <Image
-          src="/assets/jpg/events.jpg"
-          alt="Insights Background"
-          fill
-          className="object-cover"
-          priority
-        />
 
-        {/* Gradient Overlay */}
-        {/* <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(0,50,60,0)_0%,rgba(0,50,60,0.6)_71.85%,rgba(0,50,60,0.7)_100%)]"></div> */}
+export default async function EventsPage() {
+const eventPage = await strapiFetch<{
+    data: {
+      id: number;
+      title: string;
+      description: string;
+      events: Array<{
+        id: number;
+        title: string;
+        description?: any;
+        events: Array<{
+          id: number;
+            image?: {
+                  url: string;
+                  alternativeText?: string;
+            };
+            tags: Array<{
+              id: number;
+              tag: string;
+            }>;
+            title: string;
+            author: string;
+            datePublished: string;
+            category: string;
+            description: string;
+            video?: {
+              data: {
+                attributes: {
+                  url: string;
+                  alternativeText?: string;
+                };
+              } | null;
+            };
+            slug: string;
 
-        {/* Example content */}
-        <div className="relative z-10 container flex h-3/5 w-1/2 items-center rounded-tr-4xl bg-white px-12 text-nexia-dark-teal-100">
-          <div className="mx-auto flex w-full flex-col gap-3 px-6">
-            <h1 className="text-2xl ">Events</h1>
-            <p className="text-4xl font-bold">
-            Stay updated on the latest events and activities happening in our community.
+        }>;
+      }>;
+    } | null;
+  }>("/api/events-page", {
+    query: {
+      populate: {
+        events: {
+          populate: {
+            events: {
+              populate: {
+                image: {
+                  fields: ['url', 'alternativeText']
+                },
+                video: {
+                  fields: ['url', 'alternativeText']
+                },
+                tags: {
+                  populate: "*"
+                },
+              }
+            }
+          }
+        },
+      },
+    },
+    next: { revalidate: 60 },
+  });
+
+  const eventsData = eventPage?.data;
+
+
+  
+  return (
+    <section id="events-home" className="">
+      <EventsHero />
+
+      <Bounded id="events-categories" className="mt-8 py-8 flex flex-col gap-12">
+        {eventsData?.events?.map((category) => (
+          <EventsCategorySection key={category.id} {...category} />
+        ))}
+        
+        {(!eventsData?.events || eventsData.events.length === 0) && (
+          <div className="text-center py-12">
+            <p className="text-nexia-gray text-lg">
+              No event categories available at the moment.
             </p>
           </div>
-        </div>
-      </div>
-
-      <Bounded id="insights-categories" className="py-8 mt-8">
-        <Tabs defaultValue="account" className="">
-          <TabsList>
-            <TabsTrigger value="account">Nexia Day</TabsTrigger>
-            <TabsTrigger value="news">Book Club </TabsTrigger>
-            <TabsTrigger value="nexia-business-services">Others</TabsTrigger>
-
-
-
-          </TabsList>
-          <TabsContent value="account">
-            Make changes to your account here.
-          </TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
-        </Tabs>
+        )}
       </Bounded>
-  </section>;
+    </section>
+  );
 };
-
-export default page;

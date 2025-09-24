@@ -10,7 +10,7 @@ type about = {
 
 
 type Props ={
-  data: about | unknown
+  data: about 
 }
 const OurRootSection = ({data}:Props) => {
   const sectionRef = useRef<HTMLDivElement>(null);

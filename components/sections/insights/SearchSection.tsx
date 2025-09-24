@@ -32,8 +32,6 @@ const SearchSection = ({ categories }: SearchSectionProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
 
-  console.log("the freaking categories", categories);
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 

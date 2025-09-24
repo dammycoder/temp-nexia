@@ -11,7 +11,7 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
     <div>
       <HeaderWrapper />
-      <main>{children}</main>
+      <main className="">{children}</main>
 
       {/* Footer */}
       <Footer />

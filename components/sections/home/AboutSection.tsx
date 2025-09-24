@@ -12,7 +12,7 @@ import { scrollAnimations } from "@/lib/animations";
 
 
  interface About {
-  about : Props | unknown
+  about?: Props 
 }
 
 const AboutSection = ({about}:About) => {
