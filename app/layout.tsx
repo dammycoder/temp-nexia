@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./global.css";
 
-import { effra, taho } from "@/fonts";
+import { effraRegular, effraLight, effraBold, taho } from "@/fonts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -25,7 +24,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms | Nexia",
+  title:
+    "Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms | Nexia",
   description:
     "Nexia is a leading global network of independent accounting & consulting firms. Personal connections, global solutions. We are Nexia. Get in touch.",
   keywords: [
@@ -36,10 +36,11 @@ export const metadata: Metadata = {
     "auditing",
     "business advisory",
   ],
-  metadataBase: new URL ('https://nexia.ng'),
-  referrer: 'origin-when-cross-origin',
+  metadataBase: new URL("https://nexia.ng"),
+  referrer: "origin-when-cross-origin",
   openGraph: {
-    title: "Nexia Agbo Abel & Co - Global Network of Accounting & Consulting Firms",
+    title:
+      "Nexia Agbo Abel & Co - Global Network of Accounting & Consulting Firms",
     description:
       "Nexia is a leading global network of independent accounting & consulting firms. Personal connections, global solutions. We are Nexia. Get in touch.",
     url: "https://www.nexia.ng",
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpg", 
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Nexia Global Network",
@@ -68,7 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
-        className={`${effra.variable} ${taho.variable} ${geistSans.variable} ${geistMono.variable}  antialiased `}
+        className={` ${effraLight.variable} ${effraRegular.variable} ${effraBold.variable} ${taho.variable}${taho.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
         <Script

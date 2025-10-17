@@ -8,8 +8,9 @@ import {
   MeetTheTeamSection,
   FactsAndFiguresSection,
   OurServicesSection,
-} from "@/components/sections/about";
-import { strapiFetch } from "@/lib/strapi";
+  CoreValuesSection,
+} from "@/_components/sections/about";
+import { strapiFetch } from "@/_lib/strapi";
 
 export const metadata: Metadata = {
   title:
@@ -36,6 +37,17 @@ interface Stat {
   figure:string;
 }
 
+type Value ={
+  id: number;
+  name: string;
+  icon: {
+    url: string;
+    alternativeText?: string;
+  };
+}
+
+
+
 export default async function About () {
 const aboutPage = await strapiFetch<{
   data: {
@@ -56,6 +68,7 @@ const aboutPage = await strapiFetch<{
         content:string;
       };
       teamMembers:unknown;
+      values: Value[];
   }
 }>("/api/about-page", {
   query: {
@@ -64,6 +77,7 @@ const aboutPage = await strapiFetch<{
       cta: { populate: "*" },
       internationalAffiliation: { populate: "*" },
       OurRoot: { populate: "*" },
+      values: { populate: "icon" },
     },
   },
   next: { revalidate: 60 },
@@ -84,13 +98,13 @@ const pageData = aboutPage?.data;
 const TeamData = teamMembers?.data;
 const statsData =  stats?.data;
 
-
   return (
     <section id="about-us-home">
       <HeroSection title={pageData?.title ?? "About Us"} description={pageData?.descrtiption?? "Your trusted local advisory firm, supported by a global Nexia  network"}/>
       <AboutContentSection data={pageData?.about}/>
       <OurRootSection data={pageData?.OurRoot} />
       <InternationalAffiliationSection data={pageData?.internationalAffiliation}/>
+      <CoreValuesSection data={pageData?.values} />
       <OurServicesSection/>
       <MeetTheTeamSection data={TeamData}/>
       <FactsAndFiguresSection data={statsData} />

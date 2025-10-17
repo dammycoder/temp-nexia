@@ -1,26 +1,30 @@
 import localFont from "next/font/local";
 
-export const effra = localFont({
-  src: [
-    {
-      path: "./ef-light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./ef-regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./ef-bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-effra",
+export const effraLight = localFont({
+  src: "./ef-light.woff2",
+  weight: "300",
+  style: "normal",
+  variable: "--font-effra-light",
   display: "swap",
 });
+
+export const effraRegular = localFont({
+  src: "./ef-regular.woff2", 
+  weight: "400",
+  style: "normal",
+  variable: "--font-effra-regular",
+  display: "swap",
+});
+
+export const effraBold = localFont({
+  src: "./ef-bold.woff2",
+  weight: "700", 
+  style: "normal",
+  variable: "--font-effra-bold",
+  display: "swap",
+});
+
+
 
 export const taho = localFont({
   src: [

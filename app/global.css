@@ -106,8 +106,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-effra: var(--font-effra);
+  --font-effra: var(--font-effra-regular);
+  --font-efrra-bold: var(--font-effra-bold);
   --font-taho: var(--font-taho);
+  --font-effra-light: var(--font-effra-light);
 
   /* Nexia Light Teal */
   --color-nexia-light-teal-100: #00b9b9;
@@ -243,7 +245,7 @@
 }
 
 html, body{
-    font-family: var(--font-effra) ;
+    font-family: var(--font-effra-regular) ;
 }
 
 .dark {
@@ -287,5 +289,14 @@ html, body{
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.description-paragraph {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+.description-paragraph + .description-paragraph {
+  margin-top: 1em;
 }
 

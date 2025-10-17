@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
-import { RelatedInsightsCarousel } from "@/components/organisms/o-related-insights-carousel";
-import { strapiFetch } from "@/lib/strapi";
+import { RelatedInsightsCarousel } from "@/_components/organisms/o-related-insights-carousel";
+import { strapiFetch } from "@/_lib/strapi";
 import {
   HeroSection,
   AboutSection,
@@ -9,7 +9,7 @@ import {
   WhyNexiaSection,
   LocationsSection,
   ContactSection,
-} from "@/components/sections/home";
+} from "@/_components/sections/home";
 
 export const metadata: Metadata = {
   title:
@@ -171,14 +171,15 @@ export default async function Home() {
   const Location = globalData.data.location;
 
   return (
-    <div className="font-effra">
-      <HeroSection data={pageData?.heroCarousel ?? []} />
-      {pageData?.about && <AboutSection about={pageData?.about} />}
-      {pageData?.services && <ServicesSection data={pageData?.services} />}
-      <RelatedInsightsCarousel data={pageData?.insights} />
-      <WhyNexiaSection data={pageData?.whyNexia} />
-      <LocationsSection data={Location} />
-      <ContactSection />
-    </div>
+<div className="font-effra">
+  {pageData?.heroCarousel && <HeroSection data={pageData.heroCarousel} />}
+  {pageData?.about && <AboutSection about={pageData.about} />}
+  {pageData?.services && <ServicesSection data={pageData.services} />}
+  {pageData?.insights && <RelatedInsightsCarousel data={pageData.insights} />}
+  {pageData?.whyNexia && <WhyNexiaSection data={pageData.whyNexia} />}
+  {Location && <LocationsSection data={Location} />}
+  <ContactSection />
+</div>
+
   );
 }

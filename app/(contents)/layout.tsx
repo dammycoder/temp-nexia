@@ -1,7 +1,7 @@
 // components/layouts/HomeLayout.tsx
 import type { ReactNode } from "react";
-import HeaderWrapper from "@/components/organisms/o-header/HeaderWrapper";
-import Footer from "@/components/organisms/o-footer";
+import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
+import Footer from "@/_components/organisms/o-footer";
 
 interface HomeLayoutProps {
   children: ReactNode;

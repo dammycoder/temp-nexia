@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
-import { Bounded } from "@/components/bouned";
+import { Bounded } from "@/_components/bouned";
 import Image from "next/image";
 import Link from "next/link";
-import { strapiFetch } from "@/lib/strapi";
-import { getStrapiMedia } from "@/lib/utils";
+import { strapiFetch } from "@/_lib/strapi";
+import { getStrapiMedia } from "@/_lib/utils";
 
 interface Props {
   params: { slug: string };
@@ -23,45 +23,43 @@ export interface StrapiImageFormat {
   url: string;
 }
 
-
-
 const fetchLeadershipBySlug = async (slug: string) => {
   const response = await strapiFetch<{
     data: Array<{
       id: number;
+      name: string;
+      email: string;
+      bio: string;
+      position: string;
+      phone: string;
+      expertise: Array<{ id: number; title: string }>;
+      qualifications: Array<{ id: number; title: string }>;
+      image: {
+        id: number;
+        documentId: string;
         name: string;
-  email: string;
-  bio: string;
-  position: string;
-  phone: string;
-  expertise: Array<{ id: number; title: string }>;
-  qualifications: Array<{ id: number; title: string }>;
-  image: {
-      id: number;
-  documentId: string;
-  name: string;
-  alternativeText: string | null;
-  caption: string | null;
-  width: number;
-  height: number;
-  formats?: {
-    thumbnail?: StrapiImageFormat;
-    small?: StrapiImageFormat;
-    medium?: StrapiImageFormat;
-    large?: StrapiImageFormat;
-  };
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  previewUrl: string | null;
-  provider: string;
-  provider_metadata: any | null;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  };
+        alternativeText: string | null;
+        caption: string | null;
+        width: number;
+        height: number;
+        formats?: {
+          thumbnail?: StrapiImageFormat;
+          small?: StrapiImageFormat;
+          medium?: StrapiImageFormat;
+          large?: StrapiImageFormat;
+        };
+        hash: string;
+        ext: string;
+        mime: string;
+        size: number;
+        url: string;
+        previewUrl: string | null;
+        provider: string;
+        provider_metadata: any | null;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+      };
     }>;
   }>("/api/team-members/", {
     query: {
@@ -88,10 +86,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${leadership.name} | Leadership Profile`,
+    title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
     description: leadership.bio || undefined,
+    alternates: { canonical: `https://nexia.ng/about/leadership/${params.slug}` },
     openGraph: {
-      title: `${leadership.name} | Leadership Profile`,
+      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+      description: leadership.bio || undefined,
+      url: `https://nexia.ng/about/leadership/${params.slug}`,
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
       description: leadership.bio || undefined,
     },
   };
@@ -109,13 +115,16 @@ export default async function LeadershipProfile({ params }: Props) {
   return (
     <div>
       <div
-        className="h-fit bg-nexia-dark-teal-100 py-8"
+        className="bg-nexia-dark-teal-100 h-fit py-8"
         id="about-leadership-section"
       >
         <Bounded className="flex items-center gap-5">
           {leadership.image?.url && (
             <Image
-              src={getStrapiMedia(leadership?.image?.url) || "/assets/png/profile-placeholder.svg"}
+              src={
+                getStrapiMedia(leadership?.image?.url) ||
+                "/assets/jpg/profile-placeholder.png"
+              }
               alt={leadership.name}
               width={180}
               height={180}
@@ -125,12 +134,12 @@ export default async function LeadershipProfile({ params }: Props) {
           )}
 
           <div className="flex flex-col gap-2 lg:ml-5">
-            <p className="text-3xl text-nexia-light-teal-100 md:text-2xl lg:text-5xl">
+            <p className="text-nexia-light-teal-100 text-3xl md:text-2xl lg:text-5xl">
               {leadership.name}
             </p>
             <Link
               href={`mailto:${leadership.email}`}
-              className="block text-lg font-light break-all text-white transition-all hover:underline md:text-xl lg:text-3xl"
+              className="block break-all text-lg font-light text-white transition-all hover:underline md:text-xl lg:text-3xl"
             >
               {leadership.email}
             </Link>
@@ -139,49 +148,70 @@ export default async function LeadershipProfile({ params }: Props) {
       </div>
 
       <div>
-        <Bounded className="bg py-8 flex flex-col gap-5 mb-3 text-nexia-dark-teal-100 border-b-gray-200 lg:flex-row">
-          <div className="flex flex-col gap-4 bg-gray-100 p-5 rounded-xl w-full lg:w-fit ">
+        <Bounded className="bg text-nexia-dark-teal-100 mb-3 flex flex-col gap-5 border-b-gray-200 py-8 lg:flex-row">
+          <div className="flex h-fit flex-col gap-4 rounded-xl bg-gray-100 p-5 lg:w-fit">
             <p className="flex flex-col gap-2">
               <span className="text-nexia-dark-teal-100 text-2xl">
                 Job Title
               </span>
-              <span className="text-lg text-nexia-gray">{leadership?.position}</span>
+              <span className="text-nexia-gray text-lg">
+                {leadership?.position}
+              </span>
             </p>
             <p className="flex flex-col gap-2">
               <span className="text-nexia-dark-teal-100 text-2xl">Email</span>
               <Link
                 href={`mailto:${leadership?.email}`}
-                className="text-lg text-nexia-light-teal-100"
+                className="text-nexia-light-teal-100 text-lg"
               >
                 {leadership?.email}
               </Link>
             </p>
             <p className="flex flex-col gap-2">
               <span className="text-nexia-dark-teal-100 text-2xl">Mobile</span>
-              <span className="text-lg text-nexia-gray">{leadership?.phone}</span>
+              <span className="text-nexia-gray whitespace-nowrap text-lg">
+                {leadership?.phone}
+              </span>
             </p>
           </div>
 
           <div>
-            <p className="text-lg text-nexia-gray">
-             {leadership?.expertise?.length > 0 &&(
-              <>
-               <span className="text-xl text-nexia-dark-teal-100">
-                Expertise <br />
-              </span>
-
-              <div className="mt-2 flex flex-wrap gap-2 lg:gap-5 text-nexia-light-teal-100 lg:flex-row">
-                {leadership.expertise?.map((exp, index) => (
-                  <span key={index}>{exp.title}</span>
-                ))}
-              </div>
-
-                            <br />
-
-              </>
-             )}
+            {leadership?.bio && (
               <div>
-                <span className="text-xl text-nexia-dark-teal-100">
+                <div className="text-nexia-gray text-lg">
+                  {leadership?.bio && (
+                    <>
+                      <span className="text-nexia-dark-teal-100 text-xl">
+                        Bio <br />
+                      </span>
+
+                      <div className="text-nexia-gray mb-4 w-full gap-2 lg:gap-5">
+                        {leadership?.bio}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="text-nexia-gray text-lg">
+              {leadership?.expertise?.length > 0 && (
+                <>
+                  <span className="text-nexia-dark-teal-100 text-xl">
+                    Expertise <br />
+                  </span>
+
+                  <div className="text-nexia-light-teal-100 mt-2 flex flex-wrap gap-2 lg:flex-row lg:gap-5">
+                    {leadership.expertise?.map((exp, index) => (
+                      <span key={index}>{exp.title}</span>
+                    ))}
+                  </div>
+
+                  <br />
+                </>
+              )}
+{leadership?.qualifications?.length > 0 && <div>
+                <span className="text-nexia-dark-teal-100 text-xl">
                   Qualifications <br />
                 </span>
 
@@ -190,8 +220,8 @@ export default async function LeadershipProfile({ params }: Props) {
                     <span key={index}>{qual?.title}</span>
                   ))}
                 </div>
-              </div>
-            </p>
+              </div>}
+            </div>
           </div>
         </Bounded>
       </div>

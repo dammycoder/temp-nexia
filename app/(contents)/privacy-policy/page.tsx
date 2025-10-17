@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Bounded } from '@/components/bouned';
+import { Bounded } from '@/_components/bouned';
 
 export const metadata: Metadata = {
     title:

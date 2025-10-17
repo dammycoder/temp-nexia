@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import type { Metadata } from "next";
-import { Bounded } from "@/components/bouned";
-import { strapiFetch } from "@/lib/strapi";
-import EventsHero from "@/components/sections/events/EventsHero";
-import EventsCategorySection from "@/components/sections/events/EventsCategorySection";
+import { Bounded } from "@/_components/bouned";
+import { strapiFetch } from "@/_lib/strapi";
+import EventsHero from "@/_components/sections/events/EventsHero";
+import EventsCategorySection from "@/_components/sections/events/EventsCategorySection";
 
 export const metadata: Metadata = {
   title: "Events | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
@@ -29,7 +29,8 @@ const eventPage = await strapiFetch<{
             };
             tags: Array<{
               id: number;
-              tag: string;
+              name: string;
+              slug?: string;
             }>;
             title: string;
             author: string;

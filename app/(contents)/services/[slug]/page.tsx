@@ -1,10 +1,41 @@
 import React from "react";
 import type { Metadata } from "next";
-import { HeroSection, ServiceContent, HowWeCanHelpSection } from "@/components/sections/service-slug";
-import { strapiFetch } from "@/lib/strapi";
-export const metadata: Metadata = {
-  title: "Service | Nexia Agbo Abel & Co",
-};
+import { HeroSection, ServiceContent, HowWeCanHelpSection } from "@/_components/sections/service-slug";
+import { strapiFetch } from "@/_lib/strapi";
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const serviceData = await fetchServiceBySlug(params.slug);
+
+  if (!serviceData) {
+    return {
+      title: "Service Not Found | Nexia Agbo Abel & Co",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const title = `${serviceData.title} | Services | Nexia Agbo Abel & Co`;
+  const description = serviceData.description || undefined;
+  const url = `https://nexia.ng/services/${serviceData.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      siteName: "Nexia Agbo Abel & Co",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 
 const fetchServiceBySlug = async (slug: string) => {

@@ -1,11 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
-import HeroSection from "@/components/sections/insights/HeroSection";
-import SearchSection from "@/components/sections/insights/SearchSection";
-import InsightsSection from "@/components/sections/insights/InsightsSection";
-import { SubscribeSection } from "@/components/sections/insights";
-import UsefulLinksSection from "@/components/sections/insights/UsefulLinksSection";
-import { strapiFetch } from "@/lib/strapi";
+import HeroSection from "@/_components/sections/insights/HeroSection";
+import SearchSection from "@/_components/sections/insights/SearchSection";
+import InsightsSection from "@/_components/sections/insights/InsightsSection";
+import { SubscribeSection } from "@/_components/sections/insights";
+import UsefulLinksSection from "@/_components/sections/insights/UsefulLinksSection";
+import { strapiFetch } from "@/_lib/strapi";
 
 export const metadata: Metadata = {
   title:
