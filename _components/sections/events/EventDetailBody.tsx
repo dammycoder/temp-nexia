@@ -182,7 +182,7 @@ export default function EventDetailBody({
                 <div className="flex gap-4 items-center rounded-xl border p-4 transition-colors hover:bg-gray-100">
                   <div className="w-1/3">
                     <Image 
-                      src={getStrapiMedia(event?.image?.url) ?? ""} 
+                      src={getStrapiMedia(event?.image?.url) ?? "/assets/jpg/profile-placeholder.svg"} 
                       width={150} 
                       height={150} 
                       alt={event?.title}

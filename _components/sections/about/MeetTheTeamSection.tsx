@@ -69,7 +69,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
     <Link href={`/about/leadership/${member.slug}`} ref={cardRef} className="flex flex-col">
       <div className="group relative aspect-[3/4] w-full">
         <Image
-          src={getStrapiMedia(member?.image?.url) || "/assets/png/abel.png"}
+          src={getStrapiMedia(member?.image?.url) || "/assets/jpg/profile-placeholder.svg"}
           alt={member?.name}
           fill
           className="cursor-pointer rounded-tr-4xl rounded-bl-4xl object-cover transition-all duration-500 hover:rounded-none"

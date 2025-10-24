@@ -300,3 +300,6 @@ html, body{
   margin-top: 1em;
 }
 
+.animate-throb{
+  animation: throb 1.5s ease-in-out infinite;
+}

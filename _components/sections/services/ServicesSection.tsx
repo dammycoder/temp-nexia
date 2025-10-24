@@ -85,7 +85,7 @@ const MainServicesSection = ({ data }: Props) => {
         {data?.services?.length > 0 && (
           <Tabs defaultValue={data.services[0].slug} className="mt-8 w-full">
             {/* Service Tabs */}
-            <TabsList className="flex flex-wrap ">
+            <TabsList className="flex flex-wrap gap-3 mb-[80px] md:mb-0 md:gap-0">
               {data.services.map((service) => (
                 <TabsTrigger
                   key={service.id}

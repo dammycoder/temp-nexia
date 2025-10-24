@@ -39,14 +39,14 @@ export default function EventsCategorySection({ id, title, description, events }
   }, []);
 
   return (
-    <div key={id} className="flex flex-col gap-6">
+    <div key={id} className="flex flex-col gap-6 ">
       <h2 ref={headerRef} className="text-2xl text-nexia-dark-teal-100 font-bold">{title}</h2>
 
       {description && (
         <div className="text-lg text-nexia-gray max-w-4xl prose" dangerouslySetInnerHTML={{ __html: renderDescription(description) }} />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
         {events?.map((event) => {
           const e = event;
           const card: EventCardProps = {

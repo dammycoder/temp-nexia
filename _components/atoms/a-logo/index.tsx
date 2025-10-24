@@ -1,19 +1,32 @@
-import React from 'react'
-import { cn } from '@/_lib/utils'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import { cn } from "@/_lib/utils";
+import Link from "next/link";
+import Image from "next/image";
 
+type Props = {
+  className?: string;
+};
 
-type Props ={
-    className?: string
-}
-
-const Logo = ({className}: Props) => {
+const Logo = ({ className }: Props) => {
   return (
-    <Link href="/" className={cn("flex items-center gap-2 p-0  cursor-pointer", className)}>
- <Image unoptimized={true} src='/assets/png/logo.png' alt="Logo" width={50} height={50} className=' w-[120px] lg:h-[100px] xl:h-[129.85px] lg:w-full object-contain' loading='lazy' />
+    <Link
+      href="/"
+      className={cn(
+        "flex items-center gap-2 cursor-pointer",
+        className
+      )}
+    >
+      <Image
+        src="/assets/png/logo.png"
+        alt="Company Logo"
+        width={240} 
+        height={120}
+        priority
+        quality={100} 
+        className="object-contain w-[140px] md:w-[160px] lg:w-[180px] h-auto"
+      />
     </Link>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

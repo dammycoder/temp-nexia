@@ -95,7 +95,7 @@ export default async function Footer() {
             <div className="flex w-full items-center gap-2 text-white">
               <p className="text-lg lg:text-2xl">Member of</p>{" "}
               <Image
-              src={getStrapiMedia(footerData?.footerLogo?.image.url) ?? "/assets/png/abel.png"}
+              src={getStrapiMedia(footerData?.footerLogo?.image.url) ?? "/assets/jpg/profile-placeholder.svg"}
                 alt="nexia-global-logo"
                 width={200}
                 height={100}
@@ -131,7 +131,7 @@ export default async function Footer() {
       </footer>
       <div className="bg-nexia-dark-teal-100 font-effra py-8">
         <Bounded className="flex text-white">
-          <p className="bg-red-500">{footerData?.partnerPolicy}</p>
+          <p className="">{footerData?.partnerPolicy}</p>
         </Bounded>
       </div>
     </>

@@ -6,6 +6,7 @@ import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Bounded } from "@/_components/bouned";
 import Image from "next/image";
 import { getStrapiMedia } from "@/_lib/utils";
+import Link from "next/link";
 
 // Types based on your Strapi schema
 interface Chair {
@@ -13,6 +14,7 @@ interface Chair {
   readonly image: { url: string };
   readonly name: string;
   readonly position: string;
+  readonly slug: string;
 }
 
 interface SubItem {
@@ -439,11 +441,10 @@ export default function ServiceContent({ service }: ServiceContentProps) {
             </div>
           ))}
 
-          {/* Chair Section */}
           <ServiceSection id="chair" title="Chair">
             <div className="mt-3 w-full lg:max-w-[500px] bg-nexia-dark-teal-100 p-4 flex rounded-lg gap-5">
               <Image 
-                src={getStrapiMedia(service?.chair?.image?.url) || "/assets/png/abel.png"} 
+                src={getStrapiMedia(service?.chair?.image?.url) || "/assets/jpg/profile-placeholder.svg"} 
                 width={100} 
                 height={100} 
                 alt={service.chair.name}
@@ -452,9 +453,11 @@ export default function ServiceContent({ service }: ServiceContentProps) {
               <div className="text-white w-1/2"> 
                 <p className="text-2xl">{service.chair.name}</p>
                 <p className="text-nexia-light-teal-100 text-lg">{service.chair.position}</p>
-                <button className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded-full py-2 px-4 mt-6">
+          <Link href={`/about/leadership/${service?.chair?.slug}`} className="block">
+                <button className="cursor-pointer bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded-full py-2 px-4 mt-6">
                   View Profile
                 </button>
+          </Link>
               </div>
             </div>
           </ServiceSection>

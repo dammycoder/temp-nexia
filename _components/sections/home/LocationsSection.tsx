@@ -138,7 +138,7 @@ const LocationsSection = ({data}: Props) => {
       {/* Header Section */}
       <div 
         ref={headerRef}
-        className="flex items-center justify-between rounded-tr-4xl bg-nexia-dark-teal-100 px-8 py-8 mb-0"
+        className="flex items-center justify-between rounded-tr-4xl bg-nexia-dark-teal-100 px-4 lg:px-8 py-8 mb-0"
       >
         <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-bold">
           Find Local Contact
@@ -146,7 +146,7 @@ const LocationsSection = ({data}: Props) => {
       </div>
 
       {/* Content Section */}
-      <div className="rounded-bl-4xl bg-gray-50 px-8 py-8 space-y-8">
+      <div className="rounded-bl-4xl bg-gray-50 px-4 lg:px-8 py-8 space-y-8">
         {/* Description */}
         <div ref={descriptionRef} className=" md:text-left">
           <h3 className="text-xl md:text-2xl font-bold text-nexia-dark-teal-100 mb-3">

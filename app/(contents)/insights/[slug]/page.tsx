@@ -104,10 +104,10 @@ const Page = async ({ params }: Readonly<{ params: { slug: string } }>) => {
       <div className="bg-nexia-dark-teal-100 py-10">
         <Bounded className="flex flex-col gap-8 lg:flex-row lg:items-center">
           <div className="w-full lg:w-1/2 space-y-4">
-            <p className="text-nexia-light-teal-100 text-lg uppercase tracking-wide">
+            <p className="text-nexia-light-teal-100 text-lg tracking-wide">
               {insightData.category}
             </p>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight">
+            <h1 className="text-3xl md:text-4xl  font-light text-white ">
               {insightData.title}
             </h1>
           </div>

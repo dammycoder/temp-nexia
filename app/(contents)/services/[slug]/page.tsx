@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { HeroSection, ServiceContent, HowWeCanHelpSection } from "@/_components/sections/service-slug";
 import { strapiFetch } from "@/_lib/strapi";
+import { notFound } from "next/navigation";
 export async function generateMetadata(
   { params }: { params: { slug: string } }
 ): Promise<Metadata> {
@@ -50,6 +51,7 @@ const fetchServiceBySlug = async (slug: string) => {
           image: { data: { attributes: { url: string } } };
           name: string;
           position: string;
+          slug:string;
         };
         info: Array<{
           id: number;
@@ -88,12 +90,11 @@ const fetchServiceBySlug = async (slug: string) => {
 
 export default async function ServicePage({ params }: { params: { slug: string } }) {
     const serviceData = await fetchServiceBySlug(params.slug);
-
-
   
   if (!serviceData) {
-    return <div>Service not found</div>;
+    notFound();
   }
+
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const service: any = {

@@ -13,13 +13,12 @@ interface Props {
 
 
 const HeroSection = ({title, description}: Props) => {
-  const heroRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
 
   useEffect(() => {
-    if (!heroRef.current || !contentRef.current) return;
+    if ( !contentRef.current) return;
     if (panelRef.current) animations.fadeInRight(panelRef.current);
 
 
@@ -35,49 +34,39 @@ const HeroSection = ({title, description}: Props) => {
       }
     );
 
-    // Add parallax effect to background image
-    const bgImage = heroRef.current.querySelector('img');
-    if (bgImage) {
-      animations.parallax(bgImage, -5);
-    }
+  
   }, []);
 
   return (
-    <div ref={heroRef} className="relative flex  lg:h-[70vh] items-center lg:items-end">
-      {/* Background Image */}
+    <div className="relative flex  lg:h-[70vh] items-center lg:items-end">
       <Image
         src="/assets/jpg/bg-about.jpg"
         alt="About Us Background"
         fill
         quality={85}
         priority
-        className="hidden lg:block"
+        className="hidden lg:block object-cover"
       />
 
 
-<div ref={panelRef}  className="hidden lg:block absolute bottom-0  bg-white h-full lg:h-5/10 w-full lg:w-1/2 z-0 rounded-tr-4xl">
+   <div ref={contentRef}  className="z-100 w-full lg:bg-[linear-gradient(to_right,white_0_35%,transparent_35%)]">
+    <Bounded
 
-</div>
-
-      {/* Content */}
-      <Bounded
-        ref={contentRef}
-        className="relative z-10 flex  w-full   lg:bg-transparent py-8  items-center  text-nexia-dark-teal-100"
-      >
-
-        <div className="flex w-full lg:w-1/2 flex-col gap-3">
-          <h1 className="text-2xl">{title}</h1>
-          <p className="text-4xl font-bold lg:w-9/10">
-           {description}
-          </p>
-          <button
-            type="button"
-            className="mt-3 flex w-[180px] cursor-pointer items-center justify-center bg-nexia-light-teal-100 px-2 py-2 font-effra text-nexia-dark-teal-100 hover:font-bold transition-all duration-300 hover:scale-105"
-          >
-            Contact Us
-          </button>
+        className="text-nexia-dark-teal-100 relative z-10 flex w-full items-end py-0"
+    >
+        <div   className="bg-white rounded-tr-4xl flex w-full lg:w-1/2 flex-col justify-center gap-3 px-0 py-8 ">
+            <h1 className="text-2xl">{title}</h1>
+            <p className="lg:w-9/10 text-2xl md:text-3xl lg:text-4xl font-bold">{description}</p>
+            <button
+                type="button"
+                className="bg-nexia-light-teal-100 font-effra text-nexia-dark-teal-100 mt-3 flex w-[180px] cursor-pointer items-center justify-center px-2 py-2 transition-all duration-300 hover:scale-105 hover:font-bold"
+            >
+                Contact Us
+            </button>
         </div>
-      </Bounded>
+        <div className="hidden w-1/2 lg:block"></div>
+    </Bounded>
+</div>
     </div>
   );
 };

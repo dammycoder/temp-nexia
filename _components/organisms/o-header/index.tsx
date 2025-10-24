@@ -81,7 +81,7 @@ export function Header({ data }: HeaderProps) {
 
   return (
     <header className="w-full bg-nexia-dark-teal-100 font-effra relative z-10">
-      <Bounded className="flex items-center justify-between lg:py-4">
+      <Bounded className="flex items-center justify-between lg:py-4 ">
         {/* Logo */}
         <Logo />
 
@@ -142,7 +142,7 @@ export function Header({ data }: HeaderProps) {
                 <SearchIcon className="cursor-pointer text-white transition-all hover:text-nexia-light-teal-100" />
               </DialogTrigger>
 
-              <DialogContent>
+              <DialogContent className="!z-200">
                 <DialogTitle>Search</DialogTitle>
                 <div className="flex flex-col gap-4 py-3">
                   <input
@@ -272,7 +272,7 @@ export function Header({ data }: HeaderProps) {
 
           <Bounded>
             <Link href="/contact-us" className="block">
-              <button className="mt-4 w-full rounded-lg bg-nexia-dark-teal-100 px-4 py-2 text-white transition hover:bg-nexia-light-teal-100 md:w-fit">
+              <button className="whitespace-nowrap mt-4 w-full rounded-lg bg-nexia-dark-teal-100 px-4 py-2 text-white transition hover:bg-nexia-light-teal-100 md:w-fit">
                 Contact us
               </button>
             </Link>

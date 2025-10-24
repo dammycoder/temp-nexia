@@ -19,8 +19,4 @@ export const MENU_ITEMS: MenuItem[] = [
       { label: "Company Secretarial Services", href: "/css" },
     ],},
   { label: "Events", href: "/events" },
-  {
-    label: "Careers",
-    href: "/careers",
-  },
 ]

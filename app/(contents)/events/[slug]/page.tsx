@@ -107,7 +107,6 @@ const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
     notFound();
   }
 
-  console.log(eventData);
 
   const relatedMedia = eventData.relatedMedia || []
 

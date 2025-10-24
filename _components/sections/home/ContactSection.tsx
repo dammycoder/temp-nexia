@@ -42,13 +42,13 @@ const ContactSection = () => {
           className="w-full object-cover max-h-[600px]"
         />
       </div>
-      <div className="flex w-full flex-col justify-center gap-5 bg-nexia-light-teal-80 p-12 lg:w-1/2">
+      <div className="flex w-full flex-col justify-center gap-5 bg-nexia-light-teal-80 p-6 md:p-12 lg:w-1/2">
         <p className="text-dark-teal-100 text-lg font-bold">
           How can we help You
         </p>
-        <p className="text-dark-teal-100 w-full lg:w-8/10 text-2xl">
+        <p className="text-dark-teal-100 w-full lg:w-8/10 text-xl md:text-2xl">
           if you need product or project advice, technical support, or have
-          any other questions, we&apos;re here to help
+          any other questions, we&apos;re here to helper
         </p>
 <Link href="/contact-us">
         <button

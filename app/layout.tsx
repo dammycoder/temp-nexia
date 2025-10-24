@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./global.css";
+import Footer from "@/_components/organisms/o-footer";
 
 import { effraRegular, effraLight, effraBold, taho } from "@/fonts";
+import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +20,8 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
   viewportFit: "cover",
 };
 
@@ -69,9 +71,14 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
-        className={` ${effraLight.variable} ${effraRegular.variable} ${effraBold.variable} ${taho.variable}${taho.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${effraLight.variable} ${effraRegular.variable} ${effraBold.variable} ${taho.variable}${taho.variable} ${geistSans.variable} ${geistMono.variable} antialiased max-w-9xl overflow-x-clip mx-auto`}
       >
+        <HeaderWrapper />
+
         {children}
+
+        <Footer />
+
         <Script
           src="https://cookiechimp.com/widget/VWGtgDZ.js"
           strategy="beforeInteractive"

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { Bounded } from "@/_components/bouned";
 import Image from "next/image";
 import { animations, scrollAnimations } from "@/_lib/animations";
+import { ChevronRight } from "lucide-react";
 
 
 type Service ={
@@ -21,7 +22,6 @@ const HeroSection = ({data}:Props) => {
 
   useEffect(() => {
     if (!heroRef.current || !contentRef.current) return;
-
     scrollAnimations.onScroll(
       contentRef.current,
       {
@@ -41,25 +41,26 @@ const HeroSection = ({data}:Props) => {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative flex lg:h-[70vh] items-end">
+    <div ref={heroRef} className="relative flex lg:h-[70vh] items-center lg:items-end">
       {/* Background Image */}
       <Image
         src="/assets/jpg/hero-image.jpg"
         alt="About Us Background"
         fill
+        quality={85}
         priority
+        className="hidden lg:block object-cover"
       />
 
-      {/* Content */}
-      <div 
-        ref={contentRef}
-        className="relative z-10 container lg:px-12 flex h-3/5 w-full py-8 lg:w-1/2 items-center justify-center rounded-tr-4xl bg-white text-nexia-dark-teal-100"
-      >
-        <Bounded className="container mx-auto flex w-full flex-col gap-3 lg:px-12">
-          <h1 className="text-2xl">Services &gt; {data?.title}</h1>
-          <p className="text-4xl font-bold">
-            Combining local expertise with global standards to deliver real results
-          </p>
+      <div ref={contentRef} className="z-100 w-full lg:bg-[linear-gradient(to_right,white_0_35%,transparent_35%)]">
+        <Bounded className="text-nexia-dark-teal-100 relative z-10 flex w-full items-end py-0">
+          <div className="bg-white rounded-tr-4xl flex w-full lg:w-1/2 flex-col justify-center gap-3 px-0 py-8">
+            <h1 className="text-xl md:text-2xl flex items-center gap-2 ">Services <ChevronRight/> {data?.title}</h1>
+            <p className="lg:w-9/10  text-2xl md:text-3xl lg:text-4xl font-bold">
+              Combining local expertise with global standards to deliver real results
+            </p>
+          </div>
+          <div className="hidden w-1/2 lg:block"></div>
         </Bounded>
       </div>
     </div>

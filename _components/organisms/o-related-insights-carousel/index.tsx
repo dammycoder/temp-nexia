@@ -110,8 +110,8 @@ export function RelatedInsightsCarousel({ data }: Props) {
                     <Image
                       src={
                         typeof insight?.image === "string"
-                          ? getStrapiMedia((insight?.image ?? null) as string | null) || "/assets/jpg/placeholder.jpg"
-                          : getStrapiMedia((insight?.image?.url ?? null) as string | null) || "/assets/jpg/placeholder.jpg"
+                          ? getStrapiMedia((insight?.image ?? null) as string | null) || "/assets/jpg/profile-placeholder.svg"
+                          : getStrapiMedia((insight?.image?.url ?? null) as string | null) || "/assets/jpg/profile-placeholder.svg"
                       }
                       alt={
                         (typeof insight?.image !== "string" && insight?.image?.alternativeText) ||

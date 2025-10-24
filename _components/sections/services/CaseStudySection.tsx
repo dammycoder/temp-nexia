@@ -39,7 +39,7 @@ const CaseStudySection = ({ data }: { data?: Insight }) => {
 
   if (!data) return null;
 
-  const imageUrl = getStrapiMedia(data.image?.url ?? "");
+  const imageUrl = getStrapiMedia(data.image?.url ?? "/assets/jpg/profile-placeholder.svg");
 
   return (
     <Bounded ref={sectionRef} className="py-10">

@@ -109,7 +109,7 @@ const InsightsSection = ({ insights }: InsightsSectionProps) => {
               >
                 <div className="relative aspect-[4/3] w-full">
                   <Image
-                    src={getStrapiMedia(item?.image?.formats?.medium?.url ?? null) ?? "/assets/png/abel.png"}
+                    src={getStrapiMedia(item?.image?.formats?.medium?.url ?? null) ?? "/assets/jpg/profile-placeholder.svg"}
                     alt={item?.title}
                     fill
                     className="rounded-tr-4xl rounded-bl-4xl object-cover"

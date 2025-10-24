@@ -15,32 +15,40 @@ export default function EventsHero({
   subtitle = "Stay updated on the latest events and activities happening in our community.",
   backgroundImage = "/assets/jpg/events.jpg",
 }: EventsHeroProps) {
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const textRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (panelRef.current) animations.fadeInRight(panelRef.current);
-    if (textRef.current) animations.fadeInUp(textRef.current, { delay: 0.2 });
+    if (!heroRef.current || !contentRef.current) return;
+    
+    if (contentRef.current) animations.fadeInUp(contentRef.current, { delay: 0.2 });
+
+    const bgImage = heroRef.current.querySelector('img');
+    if (bgImage) {
+      animations.parallax(bgImage, -5);
+    }
   }, []);
 
   return (
-  
-
-    <div className="relative flex items-end lg:h-[70vh]">
-    <Image src={backgroundImage} alt="Events Background" fill className="object-cover -z-1 hidden lg:block" priority  />
-        <div ref={panelRef} className="hidden lg:block absolute bottom-0  bg-white h-full lg:h-5/10 w-full lg:w-1/2 z-0 rounded-tr-4xl">
-
-        </div>
-       <Bounded   className="bg-white lg:bg-transparent py-8 flex items-end rounded-tr-4xl relative z-10 ">
-       <div className="">
-         <div ref={textRef} className=" flex w-full lg:w-1/2 flex-col gap-3 ">
-          <h1 className="text-2xl ">{title}</h1>
-         <p className="text-4xl font-bold  lg:w-9/10 ">{subtitle}</p>
-         </div>
-        </div>
-       </Bounded>
+    <div ref={heroRef} className="relative flex lg:h-[70vh] items-center lg:items-end">
+      <Image 
+        src={backgroundImage} 
+        alt="Events Background" 
+        fill 
+        quality={85}
+        priority  
+        className="hidden lg:block object-cover" 
+      />
+      
+      <div ref={contentRef} className="z-100 w-full lg:bg-[linear-gradient(to_right,white_0_35%,transparent_35%)]">
+        <Bounded className="text-nexia-dark-teal-100 relative z-10 flex w-full items-end py-0">
+          <div className="bg-white rounded-tr-4xl flex w-full lg:w-1/2 flex-col justify-center gap-3 px-0 py-8">
+            <h1 className="text-2xl">{title}</h1>
+            <p className="lg:w-9/10 text-2xl md:text-3xl lg:text-4xl font-bold">{subtitle}</p>
+          </div>
+          <div className="hidden w-1/2 lg:block"></div>
+        </Bounded>
+      </div>
     </div>
   );
 }
-
-
