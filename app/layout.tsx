@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
-        className={` ${effraLight.variable} ${effraRegular.variable} ${effraBold.variable} ${taho.variable}${taho.variable} ${geistSans.variable} ${geistMono.variable} antialiased max-w-9xl overflow-x-clip mx-auto`}
+        className={` ${effraLight.variable} ${effraRegular.variable} ${effraBold.variable} ${taho.variable}${taho.variable} ${geistSans.variable} ${geistMono.variable} antialiased max-w-9xl overflow-x-clip mx-auto `}
       >
         <HeaderWrapper />
 

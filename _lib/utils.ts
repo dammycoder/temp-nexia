@@ -59,13 +59,48 @@ export function flattenAttributes(data: any): any {
 
 
 export const renderDescription = (description: any[]) => {
+  const renderChildren = (children: any[]) => {
+    return children
+      .map((child) => {
+        let text = child.text || "";
+
+        if (child.bold) text = `<strong>${text}</strong>`;
+        if (child.italic) text = `<em>${text}</em>`;
+        if (child.underline) text = `<u>${text}</u>`;
+        if (child.strikethrough) text = `<s>${text}</s>`;
+        if (child.code) text = `<code>${text}</code>`;
+        if (child.type === "link" && child.url) {
+          text = `<a href="${child.url}" class="text-nexia-light-teal-100 underline">${text}</a>`;
+        }
+
+        return text;
+      })
+      .join("");
+  };
+
+  const renderBlock = (block: any) => {
+    switch (block.type) {
+      case "paragraph":
+        return `<p class="description-paragraph text-nexia-gray text-lg mb-4">${renderChildren(block.children)}</p>`;
+      case "heading":
+        return `<h3 class="text-nexia-dark-teal-100 font-bold text-2xl mb-3">${renderChildren(block.children)}</h3>`;
+      case "quote":
+        return `<blockquote class="border-l-4 border-nexia-light-teal-100 pl-4 italic">${renderChildren(block.children)}</blockquote>`;
+      case "bulleted-list":
+        return `<ul class="list-disc ml-8 space-y-2">${block.children
+          .map((li: any) => `<li>${renderChildren(li.children)}</li>`)
+          .join("")}</ul>`;
+      case "numbered-list":
+        return `<ol class="list-decimal ml-8 space-y-2">${block.children
+          .map((li: any) => `<li>${renderChildren(li.children)}</li>`)
+          .join("")}</ol>`;
+      default:
+        return "";
+    }
+  };
+
   return description
-    .map((block) => {
-      if (block.type === "paragraph") {
-        return `<p class="description-paragraph text-justify">${block.children.map((child: any) => child.text).join("")}</p>`;
-      }
-      return "";
-    })
+    .map(renderBlock)
     .filter(Boolean)
-    .join(""); 
+    .join("");
 };

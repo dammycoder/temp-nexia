@@ -100,7 +100,8 @@ export default async function Footer() {
                 width={200}
                 height={100}
                 quality={85}
-                className="w-[200px] object-contain"
+                priority
+                className="w-[200px] h-[100px] object-contain"
               />
             </div>
             <p className="text-base text-white">{footerData?.copyright}</p>

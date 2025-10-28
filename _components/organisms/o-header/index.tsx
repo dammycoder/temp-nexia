@@ -5,7 +5,7 @@ import { Menu, ChevronDown, X, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/_components/atoms/a-logo";
 import { Bounded } from "@/_components/bouned";
-import { useSelectedLayoutSegment, useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -49,7 +49,6 @@ export function Header({ data }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>({});
   const [searchQuery, setSearchQuery] = useState("");  // <-- for search input
-  const segment = useSelectedLayoutSegment();
   const router = useRouter();
 
   const toggleMobileMenu = useCallback(() => {
@@ -63,14 +62,16 @@ export function Header({ data }: HeaderProps) {
     }));
   };
 
-  const isActiveLink = useCallback(
-    (href: string) => {
-      if (href === "/" && segment === null) return true;
-      if (href !== "/" && segment && href.includes(segment)) return true;
-      return false;
-    },
-    [segment]
-  );
+const pathname = usePathname();
+
+const isActiveLink = useCallback(
+  (href: string) => {
+    if (href === "/" && pathname === "/") return true;
+    if (href !== "/" && pathname.startsWith(href)) return true;
+    return false;
+  },
+  [pathname]
+);
 
   const handleSearch = () => {
     const q = searchQuery.trim();
@@ -80,7 +81,7 @@ export function Header({ data }: HeaderProps) {
   };
 
   return (
-    <header className="w-full bg-nexia-dark-teal-100 font-effra relative z-10">
+    <header className="w-full bg-nexia-dark-teal-100 font-effra relative">
       <Bounded className="flex items-center justify-between lg:py-4 ">
         {/* Logo */}
         <Logo />

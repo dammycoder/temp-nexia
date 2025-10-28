@@ -1,10 +1,25 @@
 import { gql } from "graphql-request";
 import { client } from "./graphqlClient";
 
-export async function getContentByTag(tag: string) {
+export async function getContentByTag(
+  tag: string,
+  eventsPage: number = 1,
+  eventsPageSize: number = 10,
+  insightsPage: number = 1,
+  insightsPageSize: number = 10
+) {
   const query = gql`
-    query GetContentByTag($tag: String!) {
-      events(filters: { tags: { name: { contains: $tag } } }) {
+    query GetContentByTag(
+      $tag: String!
+      $eventsPage: Int!
+      $eventsPageSize: Int!
+      $insightsPage: Int!
+      $insightsPageSize: Int!
+    ) {
+      events(
+        filters: { tags: { name: { contains: $tag } } }
+        pagination: { page: $eventsPage, pageSize: $eventsPageSize }
+      ) {
         documentId
         title
         description
@@ -20,7 +35,11 @@ export async function getContentByTag(tag: string) {
           slug
         }
       }
-      insights(filters: { tag: { name: { contains: $tag } } }) {
+
+      insights(
+        filters: { tag: { name: { contains: $tag } } }
+        pagination: { page: $insightsPage, pageSize: $insightsPageSize }
+      ) {
         documentId
         title
         contents
@@ -41,13 +60,20 @@ export async function getContentByTag(tag: string) {
   `;
 
   try {
-    const data = await client.request(query, { tag });
+    const data = await client.request(query, {
+      tag,
+      eventsPage,
+      eventsPageSize,
+      insightsPage,
+      insightsPageSize,
+    });
+
     return data;
-  } catch (err) {
-    console.error("Error fetching content by tag:", err);
+  } catch (error) {
+    console.error("Error fetching content by tag:", error);
+    throw error;
   }
 }
-
 
 export async function searchContent(searchTerm: string) {
   const query = gql`
