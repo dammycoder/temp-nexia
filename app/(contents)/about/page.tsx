@@ -115,4 +115,4 @@ export default async function About() {
   );
 };
 
-// export default About;
+export const dynamic = "force-dynamic";

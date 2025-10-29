@@ -72,4 +72,4 @@ const page = () => {
 
 export default page
 
-export const revalidate = 3600; 
+export const dynamic = "force-dynamic";

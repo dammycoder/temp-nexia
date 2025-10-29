@@ -118,4 +118,4 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-export const revalidate = 7200;
+export const dynamic = "force-dynamic";

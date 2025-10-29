@@ -229,4 +229,4 @@ export default async function LeadershipProfile({ params }: Props) {
   );
 }
 
-export const revalidate = 7200;
+export const dynamic = "force-dynamic";

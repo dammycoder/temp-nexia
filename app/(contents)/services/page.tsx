@@ -112,10 +112,12 @@ const ServicesPage = async () => {
       <MainServicesSection data = {page?.ourServices} />
       <CaseStudySection  data={page?.capabilities?.featuredInsight} />
       <WhatTheySaySection data={page?.capabilities?.testimonials} />
-   {page?.capabilities?.insights && <RelatedInsightsSection insights={page?.capabilities?.insights}/>}
+        {page?.capabilities?.insights && <RelatedInsightsSection insights={page?.capabilities?.insights}/>}
       <HowWeCanHelpSection />
     </section>
   );
 };
 
 export default ServicesPage;
+export const dynamic = "force-dynamic";
+

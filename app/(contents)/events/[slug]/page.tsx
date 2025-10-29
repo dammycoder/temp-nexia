@@ -129,3 +129,4 @@ const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
 }
 
 export default Page;
+export const dynamic = "force-dynamic";
