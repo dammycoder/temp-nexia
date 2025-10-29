@@ -32,12 +32,18 @@ export async function fetchData(url: string, authToken?: string, options?: Fetch
     try {
         const response = await fetch(fullUrl, requestInit);
         const data = await response.json();
+        // if (!response.ok) {
+        //     throw new Error(data?.message || 'Error fetching data');
+        // }
+
         if (!response.ok) {
-            throw new Error(data?.message || 'Error fetching data');
-        }
+            const text = await response.text();
+            console.warn(` [fetchData] Non-OK response from ${fullUrl}: ${response.status} - ${text}`);
+            return null;
+          }
+      
         return flattenAttributes(data);
     } catch (error) {
-        console.error('Fetch error:', error);
-        // throw error;
+        console.warn(`Fetch error at ${fullUrl}:`, error);
     }
 }

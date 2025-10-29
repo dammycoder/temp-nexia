@@ -138,10 +138,10 @@ export default async function LeadershipProfile({ params }: Props) {
               {leadership.name}
             </p>
             <Link
-              href={`mailto:${leadership.email}`}
+              href={`mailto:${leadership?.email}`}
               className="block break-all text-lg font-light text-white transition-all hover:underline md:text-xl lg:text-3xl"
             >
-              {leadership.email}
+              {leadership?.email}
             </Link>
           </div>
         </Bounded>
@@ -202,7 +202,7 @@ export default async function LeadershipProfile({ params }: Props) {
                   </span>
 
                   <div className="text-nexia-light-teal-100 mt-2 flex flex-wrap gap-2 lg:flex-row lg:gap-5">
-                    {leadership.expertise?.map((exp, index) => (
+                    {leadership?.expertise?.map((exp, index) => (
                       <span key={index}>{exp.title}</span>
                     ))}
                   </div>
@@ -216,7 +216,7 @@ export default async function LeadershipProfile({ params }: Props) {
                 </span>
 
                 <div className="mt-2 flex flex-col gap-1">
-                  {leadership.qualifications?.map((qual, index) => (
+                  {leadership?.qualifications?.map((qual, index) => (
                     <span key={index}>{qual?.title}</span>
                   ))}
                 </div>
@@ -228,3 +228,5 @@ export default async function LeadershipProfile({ params }: Props) {
     </div>
   );
 }
+
+export const revalidate = 7200;

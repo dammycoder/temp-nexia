@@ -63,7 +63,7 @@ const LocationCard = ({ location, index }: { location: Location, index: number }
               {location?.title}
             </h4>
             <p className="text-gray-600 text-sm leading-relaxed">
-              {location.location}
+              {location?.location}
             </p>
           </div>
         </div>
@@ -75,7 +75,7 @@ const LocationCard = ({ location, index }: { location: Location, index: number }
             </div>
           </div>
           <p className="text-nexia-dark-teal-100 text-sm font-medium">
-            {location.phone}
+            {location?.phone}
           </p>
         </div>
       </div>

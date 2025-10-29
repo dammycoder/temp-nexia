@@ -62,7 +62,7 @@ export default function EventsCategorySection({ id, title, description, events }
             contents: e?.description,
             slug: e?.slug,
           };          
-          return <EventCard key={event.id} {...card} />;
+          return <EventCard key={event?.id} {...card} />;
         })}
       </div>
     </div>

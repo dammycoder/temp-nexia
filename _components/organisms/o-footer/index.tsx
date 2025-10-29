@@ -80,7 +80,7 @@ async function loadFooterData(): Promise<FooterData> {
     },
   });
 
-  return globalData.data.footer;
+  return globalData?.data?.footer;
 }
 
 export default async function Footer() {
@@ -117,7 +117,7 @@ export default async function Footer() {
                     target={link.external ? "_blank" : "_self"}
                     rel={link.external ? "noopener noreferrer" : ""}
                   >
-                    {link.text}
+                    {link?.text}
                   </Link>
                 </li>
               ))}

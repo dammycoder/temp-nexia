@@ -48,7 +48,7 @@ interface HeaderProps {
 export function Header({ data }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>({});
-  const [searchQuery, setSearchQuery] = useState("");  // <-- for search input
+  const [searchQuery, setSearchQuery] = useState(""); 
   const router = useRouter();
 
   const toggleMobileMenu = useCallback(() => {
@@ -105,14 +105,14 @@ const isActiveLink = useCallback(
           </div>
           <nav aria-label="Global" className="hidden gap-6 lg:flex">
             {data?.link?.map((item) => (
-              <div key={item.href} className="group relative">
+              <div key={item?.href} className="group relative">
                 <Link
-                  href={item.href}
+                  href={item?.href}
                   className={`flex items-center gap-1 text-lg font-bold text-white transition ${
                     isActiveLink(item.href) ? "border-b-2 border-nexia-light-teal-100" : ""
                   }`}
                 >
-                  {item.text}
+                  {item?.text}
                   {item?.subLink?.length > 0 && (
                     <ChevronDown className="h-5 w-5 text-nexia-light-teal-100" />
                   )}
@@ -121,14 +121,14 @@ const isActiveLink = useCallback(
                 {item.subLink?.length > 0 && (
                   <ul className="invisible absolute left-0 z-20 mt-2 w-[250px] rounded-lg bg-white opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100">
                     {item.subLink.map((child) => (
-                      <li key={`${item.href}-${child.href}`}>
+                      <li key={`${item.href}-${child?.href}`}>
                         <Link
-                          href={child.href}
+                          href={child?.href}
                           className={`block px-4 py-2 text-lg font-semibold text-nexia-dark-teal-80 transition-all hover:text-nexia-light-teal-80 ${
-                            isActiveLink(child.href) ? "" : ""
+                            isActiveLink(child?.href) ? "" : ""
                           }`}
                         >
-                          {child.title}
+                          {child?.title}
                         </Link>
                       </li>
                     ))}

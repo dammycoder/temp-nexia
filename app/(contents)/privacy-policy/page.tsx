@@ -31,19 +31,16 @@ const globalData = await strapiFetch<{
   },
 });
 
-const policies = globalData.data.privacy_policy.sections;
+const policies = globalData?.data?.privacy_policy.sections;
 
 
 const page = () => {
   return (
     <section id="privacy-policy-page">
           <div className="relative flex h-[20vh] ">
-        {/* Background Image */}
         <Image
             src="/assets/jpg/hero-image.jpg"
-
-          alt="Insights Background"
-          fill
+          alt="Hero"
           className="object-cover"
           priority
         />
@@ -55,15 +52,15 @@ const page = () => {
       </div>
 
        <Bounded className="py-8 flex flex-col gap-8">
-        {policies.map((section, index) => (
+        {policies?.map((section, index) => (
           <div key={index}>
             <h2 className="font-medium text-nexia-dark-teal-100 text-xl md:text-2xl lg:text-3xl mb-2">
-              {index + 1}. {section.title}
+              {index + 1}. {section?.title}
             </h2>
 
             <div
               className="px-4 lg:px-6 text-nexia-gray text-lg space-y-4"
-              dangerouslySetInnerHTML={{ __html:renderDescription( section.content) }}
+              dangerouslySetInnerHTML={{ __html:renderDescription( section?.content) }}
             />
           </div>
         ))}
@@ -74,3 +71,5 @@ const page = () => {
 }
 
 export default page
+
+export const revalidate = 3600; 

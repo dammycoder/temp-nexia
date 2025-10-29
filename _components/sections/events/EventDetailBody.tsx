@@ -129,7 +129,7 @@ export default function EventDetailBody({
         <div className="mt-5 flex flex-wrap gap-2">
           {tags?.map((tag: any) => (
             <Link
-              key={tag.id}
+              key={tag?.id}
               href={`/tag/${tag.name}`}
               className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded px-2 py-1 text-xs hover:text-white transition-colors"
             >
@@ -191,7 +191,7 @@ export default function EventDetailBody({
                   </div>
                   <div className="w-2/3">
                     <p className="text-nexia-dark-teal-100 font-bold text-lg">
-                      {event.title}
+                      {event?.title}
                     </p>
                     
                     <div className="mt-2 flex flex-wrap gap-1">
@@ -200,7 +200,7 @@ export default function EventDetailBody({
                           key={tag.id}
                           className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded px-2 py-1 text-xs"
                         >
-                          {tag.name}
+                          {tag?.name}
                         </span>
                       ))}
                     </div>

@@ -99,3 +99,5 @@ const eventPage = await strapiFetch<{
     </section>
   );
 };
+
+export const dynamic = "force-dynamic";

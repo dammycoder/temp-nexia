@@ -168,7 +168,7 @@ export default async function Home() {
     },
   });
 
-  const Location = globalData.data.location;
+  const Location = globalData?.data?.location;
 
   return (
 <div className="font-effra">

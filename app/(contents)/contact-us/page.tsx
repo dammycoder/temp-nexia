@@ -24,7 +24,7 @@ const globalData = await strapiFetch<{
   query: { populate: ["location"] },
 });
 
-const locations = globalData.data.location;
+const locations = globalData?.data?.location;
 
 const ContactPage = () => {
   return (
@@ -40,7 +40,7 @@ const ContactPage = () => {
         <div className="space-y-8">
           {locations?.map((loc) => (
             <div
-              key={loc.id}
+              key={loc?.id}
               className="flex flex-col text-lg text-nexia-gray space-y-1"
             >
               <p className="font-bold text-nexia-dark-teal-100">
@@ -118,3 +118,4 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+export const revalidate = 7200;

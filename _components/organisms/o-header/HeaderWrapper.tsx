@@ -25,7 +25,7 @@ async function loadHeaderData() {
     },
   });
   
-  return globalData.data.header;
+  return globalData?.data?.header;
 }
 
 export default async function HeaderWrapper() {

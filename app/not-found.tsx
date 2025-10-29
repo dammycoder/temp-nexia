@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
-import Footer from "@/_components/organisms/o-footer";
+// import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
+// import Footer from "@/_components/organisms/o-footer";
 
 const Notfound = () => {
   return (
