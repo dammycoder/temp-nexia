@@ -75,8 +75,11 @@ const fetchLeadershipBySlug = async (slug: string) => {
   return response.data[0] || null;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const leadershipData = await fetchLeadershipBySlug(params.slug);
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+    const {slug} = await params;
+  const leadershipData = await fetchLeadershipBySlug(slug);
   const leadership = leadershipData;
 
   if (!leadership) {
@@ -103,8 +106,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function LeadershipProfile({ params }: Props) {
-  const leadershipData = await fetchLeadershipBySlug(params.slug);
+export default async function LeadershipProfile({params}:Readonly<{ params: {slug:string}}>) {
+  const {slug} = await params;
+
+  const leadershipData = await fetchLeadershipBySlug(slug);
 
   if (!leadershipData) {
     return <div>Leadership not found</div>;
@@ -122,8 +127,8 @@ export default async function LeadershipProfile({ params }: Props) {
           {leadership.image?.url && (
             <Image
               src={
-                getStrapiMedia(leadership?.image?.url) ||
-                "/assets/jpg/profile-placeholder.png"
+                getStrapiMedia(leadership?.image?.url) ??
+                "/assets/jpg/profile-placeholder.svg"
               }
               alt={leadership.name}
               width={180}
@@ -148,7 +153,7 @@ export default async function LeadershipProfile({ params }: Props) {
       </div>
 
       <div>
-        <Bounded className="bg text-nexia-dark-teal-100 mb-3 flex flex-col gap-5 border-b-gray-200 py-8 lg:flex-row">
+        <Bounded className="bg text-nexia-dark-teal-100 mb-3 flex flex-col gap-5 border-b-gray-200 py-8 lg:flex-row lg:items-center">
           <div className="flex h-fit flex-col gap-4 rounded-xl bg-gray-100 p-5 lg:w-fit">
             <p className="flex flex-col gap-2">
               <span className="text-nexia-dark-teal-100 text-2xl">
