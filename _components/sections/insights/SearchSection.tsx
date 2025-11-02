@@ -12,6 +12,7 @@ import {
 import { SearchIcon } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Loader } from 'lucide-react';
 
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {

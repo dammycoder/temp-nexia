@@ -175,7 +175,7 @@ const progressIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
                   <p className="text-xl text-nexia-dark-teal-100">
                     {item?.description || "TRI Conference Dubai 25th-27th September"}
                   </p>
-                  <h1 className="text-3xl leading-13 font-bold text-nexia-dark-teal-100 md:text-4xl lg:8/10">
+                  <h1 className="text-3xl leading-13 font-bold text-nexia-dark-teal-100 md:text-4xl lg:8/10 lg:max-w-[60%]">
                     {item?.title || "Find out the latest thinking on turnaround, restructuring and insolvency"}
                   </h1>
                   
