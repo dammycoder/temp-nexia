@@ -13,6 +13,8 @@ import {
   InstagramIcon,
   TwitterIcon,
 } from "@/_components/atoms/icons";
+import { notFound } from "next/navigation";
+import {InsightCard} from "@/_components/atoms/a-insight-card"
 
 async function fetchInsightBySlug(slug: string) {
   const insight = await strapiFetch<{
@@ -23,22 +25,47 @@ async function fetchInsightBySlug(slug: string) {
       description: string;
       category: string;
       content: any[];
+      insights?: Array<{
+        id: number;
+        documentId: string;
+        slug: string;
+        contents: string;
+        datePublished: string;
+        description: string;
+        category: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+        title: string;
+        image: {
+          url: string;
+          alternativeText: string;
+        }
+      }>;
       datePublished: string;
-      image: { data: { attributes: { url: string } } };
-      resourceUrl?: string;
+      image: {
+        url: string;
+        formats?: {
+          thumbnail?: { url: string | null };
+          small?: { url: string | null };
+          medium?: { url: string | null };
+          large?: { url: string | null };
+        };
+      };      resourceUrl?: string;
       tag: Array<{ id: number; name: string; slug?: string }>;
     }>;
   }>("/api/insights", {
     query: {
       filters: { slug: { $eq: slug } },
-      populate: { image: true, tag: true },
+      populate: {
+        image: true, tag: true, insights: { populate: "image" },
+      },
     },
   });
 
   return insight.data[0] || null;
 }
 
-// --- METADATA ---
 export async function generateMetadata({
   params,
 }: {
@@ -54,8 +81,8 @@ export async function generateMetadata({
 
   const title = `${insightData.title} | Insights | Nexia Agbo Abel & Co`;
   const description = insightData.description || undefined;
-  const url = `https://nexia.ng/insights/${insightData.slug}`;
-  const ogImage = getStrapiMedia(insightData.image?.data?.attributes?.url || "");
+  const url = `https://nexia.ng/insights/${insightData?.slug}`;
+  const ogImage = getStrapiMedia(insightData.image?.url || "");
 
   return {
     title,
@@ -81,41 +108,38 @@ export async function generateMetadata({
 }
 
 // --- PAGE ---
-const Page = async ({ params }: Readonly<{ params: { slug: string } }>) => {
-  const { slug } = params;
+export default async function Page({ params }: Readonly<{ params: { slug: string } }>) {
+  const { slug } = await params;
   const insightData = await fetchInsightBySlug(slug);
 
   if (!insightData) {
     return (
-      <div className="py-20 text-center text-gray-600">
-        <p>Insight not found.</p>
-      </div>
+      notFound()
     );
   }
 
   const tags = insightData.tag || [];
   const imageUrl =
-    getStrapiMedia(insightData.image?.data?.attributes?.url) ||
-    "/assets/jpg/events.jpg";
+    getStrapiMedia(insightData.image?.url) ||
+    "/assets/jpg/profile-placeholder.svg";
 
   return (
     <div>
-      {/* HERO SECTION */}
       <div className="bg-nexia-dark-teal-100 py-10">
         <Bounded className="flex flex-col gap-8 lg:flex-row lg:items-center">
           <div className="w-full lg:w-1/2 space-y-4">
             <p className="text-nexia-light-teal-100 text-lg tracking-wide">
-              {insightData.category}
+              {insightData?.category}
             </p>
             <h1 className="text-3xl md:text-4xl  font-light text-white ">
-              {insightData.title}
+              {insightData?.title}
             </h1>
           </div>
 
           <div className="h-[300px] w-full lg:w-1/2 overflow-hidden rounded-tr-4xl rounded-bl-4xl">
             <Image
               src={imageUrl}
-              alt={insightData.title}
+              alt={insightData?.title}
               width={800}
               height={500}
               className="w-full h-full object-cover"
@@ -140,17 +164,16 @@ const Page = async ({ params }: Readonly<{ params: { slug: string } }>) => {
             <div className="flex flex-wrap gap-2 mt-6">
               {tags.map((tag) => (
                 <Link
-                  key={tag.id}
-                  href={`/tags/${tag.slug || tag.name}`}
+                  key={tag?.id}
+                  href={`/tags/${tag?.slug || tag?.name}`}
                   className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded-sm px-3 py-1 text-xs font-semibold hover:text-white hover:bg-nexia-dark-teal-100 transition-colors"
                 >
-                  #{tag.name}
+                  {tag?.name}
                 </Link>
               ))}
             </div>
           )}
 
-          {/* DOWNLOAD RESOURCE */}
           {insightData.resourceUrl && (
             <div className="mt-8">
               <a
@@ -166,7 +189,6 @@ const Page = async ({ params }: Readonly<{ params: { slug: string } }>) => {
           )}
         </div>
 
-        {/* RIGHT: SIDEBAR */}
         <aside className="w-full lg:w-2/5 space-y-6">
           <div>
             <p className="text-xl text-nexia-dark-teal-100 mb-2">Share:</p>
@@ -177,26 +199,34 @@ const Page = async ({ params }: Readonly<{ params: { slug: string } }>) => {
             </div>
           </div>
 
-          <div>
-            <p className="text-xl text-nexia-light-teal-100 mb-2">
-              Related Services:
-            </p>
-            <p className="text-nexia-dark-teal-100 text-base">Advisory</p>
-          </div>
+        
 
-          <div>
-            <p className="text-xl text-nexia-light-teal-100 mb-2">
-              Related Insights:
-            </p>
-            <p className="text-gray-600 text-base italic">
-              Coming soon...
-            </p>
-          </div>
+          {insightData.insights && insightData.insights.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+              {insightData.insights.map((related) => (
+                <InsightCard
+                  key={related?.id}
+                  id={related?.id}
+                  slug={related?.slug}
+                  title={related?.title}
+                  category={related?.category}
+                  datePublished={related?.datePublished}
+                  image={{
+                    formats: {
+                      medium: {
+                        url: related.image?.url,
+                      },
+                    },
+                  }}
+                />
+              ))}
+            </div>
+          ) 
+        }
         </aside>
       </Bounded>
     </div>
   );
 };
 
-export default Page;
 export const dynamic = "force-dynamic";

@@ -123,9 +123,9 @@ export function RelatedInsightsCarousel({ data }: Props) {
                     />
                   </div>
                   <div className="mt-4 bg-white">
-                    <h3 className="text-nexia-dark-teal-100 mb-2 text-lg font-bold">
+                    <Link href={`/insights/${insight?.slug}`} className="text-nexia-dark-teal-100 mb-2 text-lg font-bold transition-colors hover:text-nexia-light-teal-100">
                       {insight?.title}
-                    </h3>
+                    </Link>
                     <p className="text-nexia-gray text-base">{insight?.date}</p>
                   </div>
                 </div>

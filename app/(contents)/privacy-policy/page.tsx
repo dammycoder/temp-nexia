@@ -39,8 +39,9 @@ const page = () => {
     <section id="privacy-policy-page">
           <div className="relative flex h-[20vh] ">
         <Image
-            src="/assets/jpg/hero-image.jpg"
+          src="/assets/jpg/hero-image.jpg"
           alt="Hero"
+          fill
           className="object-cover"
           priority
         />

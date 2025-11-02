@@ -93,7 +93,7 @@ const isActiveLink = useCallback(
               <button
                 className={cn(
                   "flex w-[150px] cursor-pointer items-center justify-center gap-2 border px-4 py-2 transition-all duration-300",
-                  "hover:border-none hover:bg-nexia-light-teal-100 hover:font-bold",
+                  "hover:border-none hover:bg-nexia-light-teal-100 hover:font-bold hover:text-white",
                   isActiveLink("/contact-us")
                     ? "border-nexia-dark-teal-100 bg-white text-nexia-light-teal-100"
                     : "border-white text-white"

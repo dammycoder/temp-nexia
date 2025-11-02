@@ -36,7 +36,6 @@ const HowWeCanHelpSection = () => {
           loading="lazy"
           placeholder="blur"
           blurDataURL="/assets/jpg/profile-placeholder.png"
-          unoptimized
           className="w-full object-cover max-h-[600px]"
         />
       </div>

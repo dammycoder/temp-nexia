@@ -153,7 +153,7 @@ export default async function LeadershipProfile({params}:Readonly<{ params: {slu
       </div>
 
       <div>
-        <Bounded className="bg text-nexia-dark-teal-100 mb-3 flex flex-col gap-5 border-b-gray-200 py-8 lg:flex-row lg:items-center">
+        <Bounded className=" text-nexia-dark-teal-100 mb-3 flex flex-col gap-5 border-b-gray-200 py-8 lg:flex-row">
           <div className="flex h-fit flex-col gap-4 rounded-xl bg-gray-100 p-5 lg:w-fit">
             <p className="flex flex-col gap-2">
               <span className="text-nexia-dark-teal-100 text-2xl">
