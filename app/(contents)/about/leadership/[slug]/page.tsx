@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { strapiFetch } from "@/_lib/strapi";
 import { getStrapiMedia } from "@/_lib/utils";
-
+import { notFound } from 'next/navigation'
 
 
 export interface StrapiImageFormat {
@@ -81,15 +81,13 @@ export async function generateMetadata(
   const leadership = leadershipData;
 
   if (!leadership) {
-    return {
-      title: "Leadership Not Found",
-    };
+  notFound()
   }
 
   return {
     title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
     description: leadership.bio || undefined,
-    alternates: { canonical: `https://nexia.ng/about/leadership/${params.slug}` },
+    alternates: { canonical: `https://nexia.ng/about/leadership/${params?.slug}` },
     openGraph: {
       title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
       description: leadership.bio || undefined,
@@ -104,13 +102,15 @@ export async function generateMetadata(
   };
 }
 
-export default async function LeadershipProfile({params}:Readonly<{ params: {slug:string}}>) {
-  const {slug} = await params;
+
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) { 
+  
+  const { slug } = await params;
 
   const leadershipData = await fetchLeadershipBySlug(slug);
 
   if (!leadershipData) {
-    return <div>Leadership not found</div>;
+    return notFound()
   }
 
   const leadership = leadershipData;

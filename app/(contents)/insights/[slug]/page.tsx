@@ -63,10 +63,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const insightData = await fetchInsightBySlug(params.slug);
   if (!insightData) {
-    return {
-      title: "Insight Not Found | Nexia",
-      robots: { index: false, follow: false },
-    };
+    return notFound()
   }
 
   const title = `${insightData.title} | Insights | Nexia Agbo Abel & Co`;
@@ -98,8 +95,9 @@ export async function generateMetadata({
 }
 
 // --- PAGE ---
-export default async function Page({ params }: Readonly<{ params: { slug: string } }>) {
-  const { slug } = await params;
+
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) { 
+   const { slug } = await params;
   const insightData = await fetchInsightBySlug(slug);
 
   if (!insightData) {

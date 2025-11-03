@@ -99,7 +99,9 @@ export async function generateMetadata(
   };
 }
 
-const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
+
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) { 
+  
   const {slug} = await params;
   const eventData = await fetchEventBySlug(slug);
 
@@ -120,13 +122,12 @@ const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
         <EventDetailBody 
           relatedEvents={eventData?.relatedEvents?.events}
           contents={eventData?.contents}
-          relatedMedia={relatedMedia} // Pass the correct relatedMedia
+          relatedMedia={relatedMedia} 
           tags={eventData?.tags}
-          eventTitle={eventData?.title} // Add eventTitle for sharing
+          eventTitle={eventData?.title} 
         />
       </div>
   );
 }
 
-export default Page;
 export const dynamic = "force-dynamic";
