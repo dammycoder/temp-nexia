@@ -13,7 +13,7 @@ type EventsHeroProps = {
 export default function EventsHero({
   title = "Events",
   subtitle = "Stay updated on the latest events and activities happening in our community.",
-  backgroundImage = "/assets/jpg/events.jpg",
+  backgroundImage = "/assets/webp/pexels-lucianphotography-3566187.webp",
 }: EventsHeroProps) {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -39,7 +39,7 @@ export default function EventsHero({
         transition-all duration-500 ease-out
       "
       style={{
-        backgroundImage: "url('/assets/jpg/events.jpg')",
+        backgroundImage: "url('/assets/webp/pexels-lucianphotography-3566187.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

@@ -1,8 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
-import { HeroSection, ServiceContent, HowWeCanHelpSection } from "@/_components/sections/service-slug";
+import { HeroSection, ServiceContent} from "@/_components/sections/service-slug";
 import { strapiFetch } from "@/_lib/strapi";
 import { notFound } from "next/navigation";
+import {ContactSection} from "@/_components/sections/home";
+
 export async function generateMetadata(
   { params }: { params: { slug: string } }
 ): Promise<Metadata> {
@@ -110,7 +112,8 @@ export default async function ServicePage({ params }: { params: { slug: string }
     <section className="">
         <HeroSection data={service}/>
 <ServiceContent service={service} />
-      <HowWeCanHelpSection />
+<ContactSection />
+
     </section>
   );
 };

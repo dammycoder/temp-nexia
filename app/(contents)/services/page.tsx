@@ -7,8 +7,9 @@ import {
   MainServicesSection,
   WhatTheySaySection,
   RelatedInsightsSection,
-  HowWeCanHelpSection,
 } from "@/_components/sections/services";
+import {ContactSection} from "@/_components/sections/home";
+
 import { strapiFetch } from "@/_lib/strapi";
 
 export const metadata: Metadata = {
@@ -113,7 +114,7 @@ const ServicesPage = async () => {
       <CaseStudySection  data={page?.capabilities?.featuredInsight} />
       <WhatTheySaySection data={page?.capabilities?.testimonials} />
         {page?.capabilities?.insights && <RelatedInsightsSection insights={page?.capabilities?.insights}/>}
-      <HowWeCanHelpSection />
+        <ContactSection />
     </section>
   );
 };

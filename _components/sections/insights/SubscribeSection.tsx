@@ -137,7 +137,7 @@ const SubscribeSection = () => {
 
   return (
 <Bounded className="  ">
-<div className="py-8 px-4 bg-gray-100 mb-10 " ref={sectionRef}>
+<div className="py-8 px-4 bg-gray-100 my-10 " ref={sectionRef}>
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <div ref={contentRef} className="text-nexia-dark-teal-100">
           <p ref={titleRef} className="text-2xl lg:text-3xl">

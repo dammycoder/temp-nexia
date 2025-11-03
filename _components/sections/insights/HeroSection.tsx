@@ -51,7 +51,7 @@ const HeroSection = ({ insight }: HeroSectionProps) => {
  
   }, []);
 
-  const heroImage = '/assets/jpg/depositphotos_127543442-stock-photo-aerial-photography-on-top-of.jpg';
+  const heroImage = '/assets/webp/hight-rise-condominium-office-buildings.webp';
 
   return (
     <div className="relative flex lg:h-[70vh] items-center lg:items-end">

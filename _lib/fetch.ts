@@ -37,8 +37,6 @@ export async function fetchData(url: string, authToken?: string, options?: Fetch
         // }
 
         if (!response.ok) {
-            const text = await response.text();
-            console.warn(` [fetchData] Non-OK response from ${fullUrl}: ${response.status} - ${text}`);
             return null;
           }
       
@@ -46,4 +44,27 @@ export async function fetchData(url: string, authToken?: string, options?: Fetch
     } catch (error) {
         console.warn(`Fetch error at ${fullUrl}:`, error);
     }
+}
+
+export async function swrFetcher(url: string, authToken?: string, options?: { query?: Record<string, unknown> }) {
+    const { query } = options || {};
+
+    const baseUrl = url.startsWith("http") ? "" : (getBaseUrl() || "");
+    const queryString = query ? `?${qs.stringify(query, { encodeValuesOnly: true })}` : "";
+    const fullUrl = `${baseUrl}${url}${queryString}`;
+
+    const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch');
+    }
+
+    const data = await response.json();
+    return data; // Return raw Strapi response without flattening
 }

@@ -31,10 +31,8 @@ export default function EventDetailBody({
   const shareRef = useRef<HTMLDivElement | null>(null);
   const relatedEventsRef = useRef<HTMLDivElement | null>(null);
 
-  // Get current page URL for sharing
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-  // Social sharing functions
   const shareOnLinkedIn = () => {
     const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
     window.open(url, '_blank', 'width=600,height=400');
@@ -94,7 +92,6 @@ export default function EventDetailBody({
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedMedia.map((media: any) => {
               const isImage = media?.mime?.startsWith("image/");
-              const isVideo = media?.mime?.startsWith("video/");
               const src = getStrapiMedia(media?.url);
 
               return (
@@ -111,15 +108,6 @@ export default function EventDetailBody({
                     />
                   )}
 
-                  {isVideo && (
-                    <video
-                      controls
-                      className="w-full h-full object-cover rounded-lg"
-                    >
-                      <source src={src ?? ""} type={media.mime} />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
                 </div>
               );
             })}

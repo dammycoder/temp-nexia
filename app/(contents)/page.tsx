@@ -9,7 +9,9 @@ import {
   WhyNexiaSection,
   LocationsSection,
   ContactSection,
+  MediaSection,
 } from "@/_components/sections/home";
+
 
 export const metadata: Metadata = {
   title:
@@ -153,22 +155,29 @@ export default async function Home() {
     whyNexia?: WhyNexiaData;
   } | null;
 
-  const globalData = await strapiFetch<{
-    data: {
-      location: Array<{
-        id: string;
-        title: string;
-        location: string;
-        phone: string;
-      }>;
-    };
-  }>("/api/global", {
-    query: {
-      populate: ["location"],
-    },
-  });
+const globalData = await strapiFetch<{
+  data: {
+    location: Array<{
+      id: string;
+      title: string;
+      location: string;
+      phone: string;
+    }>;
+    media: Array<{
+      id: string;
+      YoutubeLink: string;
+      title:string;
+    }>;
+  };
+}>("/api/global", {
+  query: {
+    populate: ["location", "media"], 
+  },
+});
+
 
   const Location = globalData?.data?.location;
+  const Media = globalData?.data?.media;
 
   return (
 <div className="font-effra">
@@ -176,6 +185,7 @@ export default async function Home() {
   {pageData?.about && <AboutSection about={pageData.about} />}
   {pageData?.services && <ServicesSection data={pageData.services} />}
   {pageData?.insights && <RelatedInsightsCarousel data={pageData.insights} />}
+  {Media && <MediaSection data={Media} />}
   {pageData?.whyNexia && <WhyNexiaSection data={pageData.whyNexia} />}
   {Location && <LocationsSection data={Location} />}
   <ContactSection />

@@ -1,18 +1,16 @@
 import React from "react";
 import type { Metadata } from "next";
 import HeroSection from "@/_components/sections/insights/HeroSection";
-import SearchSection from "@/_components/sections/insights/SearchSection";
-import InsightsSection from "@/_components/sections/insights/InsightsSection";
-import { SubscribeSection } from "@/_components/sections/insights";
 import UsefulLinksSection from "@/_components/sections/insights/UsefulLinksSection";
 import { strapiFetch } from "@/_lib/strapi";
+import InsightsClient from "@/_components/organisms/o-insights"; // ✅ your new client component
 
 export const metadata: Metadata = {
   title:
     "Insights | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
 };
 
-
+// ✅ define Insight type if needed for HeroSection
 type Insight = {
   id: number;
   title: string;
@@ -33,15 +31,7 @@ type Insight = {
 };
 
 const InsightsPage = async () => {
-  const insights = await strapiFetch<{ data: Insight[] }>("/api/insights", {
-    query: {
-      populate: { image: true },
-      sort: ["datePublished:desc"],
-      pagination: { page: 1, pageSize: 10 },
-    },
-  });
-
-
+  // Fetch categories (for the select filter)
   const categorySchema = await strapiFetch<{
     data: {
       schema: {
@@ -57,7 +47,8 @@ const InsightsPage = async () => {
     };
   }>("/api/content-type-builder/content-types/api::insight.insight");
 
-  const categories = categorySchema?.data?.schema?.attributes?.category?.enum;
+  const categories =
+    categorySchema?.data?.schema?.attributes?.category?.enum || [];
 
   const globalData = await strapiFetch<{
     data: {
@@ -74,26 +65,31 @@ const InsightsPage = async () => {
     },
   });
 
-  const usefulLinks = globalData?.data?.usefulLinks;
+  const usefulLinks = globalData?.data?.usefulLinks || [];
 
-  const latestInsight = insights?.data?.length > 0 ? insights.data[0] : undefined;
+  const insights = await strapiFetch<{ data: Insight[] }>("/api/insights", {
+    query: {
+      populate: { image: true },
+      sort: ["datePublished:desc"],
+      pagination: { page: 1, pageSize: 1 },
+    },
+  });
+
+  const latestInsight = insights?.data?.[0];
+
   return (
     <section id="insights-home">
       {latestInsight && <HeroSection insight={latestInsight} />}
-      {categories && (
-        <SearchSection categories={categories} />
-      )}
-      <SubscribeSection />
-      {insights?.data && (
-        <InsightsSection insights={insights.data} />
-      )}
-      {usefulLinks && (
+
+      {categories.length > 0 && <InsightsClient categories={categories} />}
+
+
+      {usefulLinks.length > 0 && (
         <UsefulLinksSection data={usefulLinks} />
       )}
-
     </section>
   );
 };
 
 export default InsightsPage;
-export const dynamic = "force-dynamic";
+
