@@ -64,9 +64,9 @@ async function fetchEventBySlug(slug: string) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> } // Fix: Accept Promise
 ): Promise<Metadata> {
-  const {slug} = await params;
+  const { slug } = await params; // Fix: Await the Promise
   const eventData = await fetchEventBySlug(slug);
 
   if (!eventData) {

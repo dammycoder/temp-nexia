@@ -74,24 +74,24 @@ const fetchLeadershipBySlug = async (slug: string) => {
 };
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-    const {slug} = await params;
+  const { slug } = await params;
   const leadershipData = await fetchLeadershipBySlug(slug);
   const leadership = leadershipData;
 
   if (!leadership) {
-  notFound()
+    notFound()
   }
 
   return {
     title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
     description: leadership.bio || undefined,
-    alternates: { canonical: `https://nexia.ng/about/leadership/${params?.slug}` },
+    alternates: { canonical: `https://nexia.ng/about/leadership/${slug}` },
     openGraph: {
       title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
       description: leadership.bio || undefined,
-      url: `https://nexia.ng/about/leadership/${params.slug}`,
+      url: `https://nexia.ng/about/leadership/${slug}`,
       type: "profile",
     },
     twitter: {

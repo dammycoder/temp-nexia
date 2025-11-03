@@ -59,9 +59,10 @@ async function fetchInsightBySlug(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; 
 }): Promise<Metadata> {
-  const insightData = await fetchInsightBySlug(params.slug);
+  const { slug } = await params; 
+  const insightData = await fetchInsightBySlug(slug); 
   if (!insightData) {
     return notFound()
   }

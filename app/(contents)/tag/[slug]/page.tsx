@@ -28,17 +28,14 @@ type ContentByTagResponse = {
   insights: FlatInsight[];
 };
 
-export default async function TagPage({
-  params,
-}: {
+export default async function TagPage({ 
+  params, 
+}: { 
   params: Promise<{ slug: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { slug } = await params;
 
   const content = await getContentByTag(slug, 1, 10) as ContentByTagResponse;
-
-
 
   const events = (content.events || []).map((e) => ({ ...e, type: 'event' as const }));
   const insights = (content.insights || []).map((i) => ({ ...i, type: 'insight' as const }));
