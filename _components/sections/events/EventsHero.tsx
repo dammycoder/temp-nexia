@@ -15,42 +15,25 @@ export default function EventsHero({
   subtitle = "Stay updated on the latest events and activities happening in our community.",
   backgroundImage = "/assets/webp/pexels-lucianphotography-3566187.webp",
 }: EventsHeroProps) {
-  const heroRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!heroRef.current || !contentRef.current) return;
+    if (!contentRef.current) return;
 
     animations.fadeInUp(contentRef.current, { delay: 0.2 });
-
-    const bgImage = heroRef.current.querySelector("img");
-    if (bgImage) {
-      animations.parallax(bgImage, -5);
-    }
   }, []);
 
   return (
-    <div
-      ref={heroRef}
-      className="
-        relative flex items-center lg:items-end 
-        lg:h-[70vh] 
-        bg-cover bg-center bg-no-repeat 
-        transition-all duration-500 ease-out
-      "
-      style={{
-        backgroundImage: "url('/assets/webp/pexels-lucianphotography-3566187.webp')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <link rel="preload" href={backgroundImage} as="image" />
-
-
+    <div className="relative flex lg:h-[70vh] items-center lg:items-end">
+      {/* Background Image */}
       <div
-        ref={contentRef}
-        className="z-100 w-full lg:bg-[linear-gradient(to_right,white_0_35%,transparent_35%)]"
-      >
+        className="hidden lg:block absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('${backgroundImage}')`,
+        }}
+      />
+
+      <div ref={contentRef} className="z-100 w-full lg:bg-[linear-gradient(to_right,white_0_35%,transparent_35%)]">
         <Bounded className="text-nexia-dark-teal-100 relative z-10 flex w-full items-end py-0">
           <div className="bg-white rounded-tr-4xl flex w-full lg:w-1/2 flex-col justify-center gap-3 px-0 py-8">
             <h1 className="text-2xl">{title}</h1>

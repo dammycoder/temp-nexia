@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,6 +9,7 @@ export type EventCardProps = {
   id: number;
   image?: string | null;
   tags?: Array<string | { label: string; href: string }>;
+  description?: string;
   title: string;
   author?: string;
   datePublished?: string;
@@ -23,6 +23,7 @@ export default function EventCard({
   tags = [],
   title,
   datePublished,
+  description,
   slug,
 }: EventCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +47,7 @@ export default function EventCard({
       <div
         ref={cardRef}
         key={id}
-        className="relative bg-white rounded-tr-4xl rounded-bl-4xl w-full max-w-[400px] shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 flex flex-col"
+        className="relative bg-white rounded-tr-4xl rounded-bl-4xl w-full shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 flex flex-col"
       >
         {/* Image section */}
         <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -61,7 +62,7 @@ export default function EventCard({
           />
 
           {datePublished && (
-            <div className="absolute top-0 right-0 bg-nexia-dark-teal-100/95 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-tr-xl ">
+            <div className="absolute top-0 right-0 bg-nexia-dark-teal-100/95 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-tr-xl">
               {new Date(datePublished).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
@@ -71,11 +72,18 @@ export default function EventCard({
           )}
         </div>
 
-        {/* Card content */}
+        {/* Description - always show if exists */}
+        {description && (
+          <p className="text-nexia-gray p-4 text-sm line-clamp-3">
+            {description?.replace(/<[^>]*>/g, '')}
+          </p>
+        )}
+
+        {/* Content section - always show */}
         <div className="p-6 flex flex-col flex-grow text-nexia-dark-teal-100">
-          {/* Tags */}
+          {/* Tags - only show if tags exist */}
           {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-3 mt-1">
+            <div className="flex flex-wrap gap-2 mb-3">
               {tags.map((tag, index) => {
                 const isObject =
                   typeof tag === 'object' && tag !== null && 'label' in tag;
@@ -88,7 +96,7 @@ export default function EventCard({
                       href={obj.href}
                       className="px-2 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs rounded hover:bg-nexia-light-teal-200 transition-colors"
                     >
-                      {obj.label}
+                      {obj?.label}
                     </Link>
                   );
                 }
@@ -105,8 +113,8 @@ export default function EventCard({
             </div>
           )}
 
-          {/* Title */}
-          <h3 className="text-xl font-bold mb-2 line-clamp-2">{title}</h3>
+          {/* Title - always show */}
+          <h3 className="text-xl font-bold line-clamp-2">{title}</h3>
         </div>
       </div>
     </Link>

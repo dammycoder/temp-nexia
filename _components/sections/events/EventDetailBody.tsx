@@ -5,7 +5,6 @@ import { Bounded } from "@/_components/bouned";
 import { getStrapiMedia, renderDescription } from "@/_lib/utils";
 import {
   LinkedInIcon,
-  InstagramIcon,
   TwitterIcon,
 } from "@/_components/atoms/icons";
 import { scrollAnimations } from "@/_lib/animations";
@@ -44,17 +43,7 @@ export default function EventDetailBody({
     window.open(url, '_blank', 'width=600,height=400');
   };
 
-  const shareOnInstagram = () => {
-    // Instagram doesn't support direct sharing via URL, so we'll copy to clipboard
-    navigator.clipboard.writeText(currentUrl)
-      .then(() => {
-        alert('Event link copied to clipboard! You can now share it on Instagram.');
-      })
-      .catch(() => {
-        // Fallback if clipboard fails
-        prompt('Copy this link to share on Instagram:', currentUrl);
-      });
-  };
+
 
 
   useEffect(() => {
@@ -147,16 +136,8 @@ export default function EventDetailBody({
               <TwitterIcon               className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
  />
             </button>
-            <button
-              onClick={shareOnInstagram}
-              className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
-              aria-label="Share on Instagram"
-            >
-              <InstagramIcon               className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
- />
-            </button>
+           
             
-            {/* Optional Native Share Button */}
             
           </div>
         </div>

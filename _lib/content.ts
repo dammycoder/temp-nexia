@@ -2,91 +2,26 @@ import { gql } from "graphql-request";
 import { client } from "./graphqlClient";
 
 export async function getContentByTag(
-  tag: string,
-  eventsPage: number = 1,
-  eventsPageSize: number = 10,
-  insightsPage: number = 1,
-  insightsPageSize: number = 10
+  tagSlug: string,
+  page: number = 1,
+  pageSize: number = 10
 ) {
   const query = gql`
     query GetContentByTag(
-      $tag: String!
-      $eventsPage: Int!
-      $eventsPageSize: Int!
-      $insightsPage: Int!
-      $insightsPageSize: Int!
+      $tagSlug: String!
+      $eventPagination: PaginationArg
+      $insightPagination: PaginationArg
     ) {
-      events(
-        filters: { tags: { name: { contains: $tag } } }
-        pagination: { page: $eventsPage, pageSize: $eventsPageSize }
-      ) {
-        documentId
-        title
-        description
+      # First get the tag to verify it exists and get its ID
+      tags(filters: { slug: { eq: $tagSlug } }) {
+        name
         slug
-        publishedAt
-        image {
-          url
-          alternativeText
-        }
-        tags {
-          documentId
-          name
-          slug
-        }
       }
 
-      insights(
-        filters: { tag: { name: { contains: $tag } } }
-        pagination: { page: $insightsPage, pageSize: $insightsPageSize }
-      ) {
-        documentId
-        title
-        contents
-        slug
-        publishedAt
-        category
-        image {
-          url
-          alternativeText
-        }
-        tag {
-          documentId
-          name
-          slug
-        }
-      }
-    }
-  `;
-
-  try {
-    const data = await client.request(query, {
-      tag,
-      eventsPage,
-      eventsPageSize,
-      insightsPage,
-      insightsPageSize,
-    });
-
-    return data;
-  } catch (error) {
-    console.error("Error fetching content by tag:", error);
-    throw error;
-  }
-}
-
-export async function searchContent(searchTerm: string) {
-  const query = gql`
-    query SearchContent($search: String!) {
+      # Get events that have this tag related
       events(
-        filters: {
-          or: [
-            { title: { containsi: $search } }
-            { description: { containsi: $search } }
-            { author: { containsi: $search } }
-          ]
-        }
-        pagination: { limit: 50 }
+        filters: { tags: { slug: { eq: $tagSlug } } }
+        pagination: $eventPagination
       ) {
         title
         description
@@ -105,16 +40,11 @@ export async function searchContent(searchTerm: string) {
       }
 
       insights(
-        filters: {
-          or: [
-            { title: { containsi: $search } }
-            { contents: { containsi: $search } }
-          ]
-        }
-        pagination: { limit: 50 }
+        filters: { tag: { slug: { eq: $tagSlug } } }
+        pagination: $insightPagination
       ) {
         title
-        contents
+        content
         slug
         datePublished
         category
@@ -130,8 +60,79 @@ export async function searchContent(searchTerm: string) {
     }
   `;
 
+  const eventPagination = { page, pageSize };
+  const insightPagination = { page, pageSize };
+
   try {
-    const data = await client.request(query, { search: searchTerm });
+    const data = await client.request(query, { 
+      tagSlug, 
+      eventPagination, 
+      insightPagination 
+    });
+    return data; 
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+export async function searchContent(searchTerm: string, page: number = 1, pageSize: number = 6) {
+  const query = `
+    query SearchContent($eventFilters: EventFiltersInput, $insightFilters: InsightFiltersInput, $eventPagination: PaginationArg, $insightPagination: PaginationArg) {
+      events(filters: $eventFilters, pagination: $eventPagination) {
+        title
+        description
+        slug
+        datePublished
+        author
+        category
+        image {
+          url
+          alternativeText
+        }
+        tags {
+          name
+          slug
+        }
+      }
+      insights(filters: $insightFilters, pagination: $insightPagination) {
+        title
+        content
+        slug
+        datePublished
+        category
+        image {
+          url
+          alternativeText
+        }
+        tag {
+          name
+          slug
+        }
+      }
+    }
+  `;
+
+  const eventFilters = {
+    or: [
+      { title: { containsi: searchTerm } },
+      { description: { containsi: searchTerm } },
+      { author: { containsi: searchTerm } }
+    ]
+  };
+
+  const insightFilters = {
+    or: [
+      { title: { containsi: searchTerm } },
+      { content: { containsi: searchTerm } }
+    ]
+  };
+
+  const eventPagination = { page, pageSize };
+  const insightPagination = { page, pageSize };
+
+  try {
+    const data = await client.request(query, { eventFilters, insightFilters, eventPagination, insightPagination });
     return data;
   } catch (err) {
     console.error("Error fetching content by search:", err);

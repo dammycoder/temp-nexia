@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     "Insights | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
 };
 
-// ✅ define Insight type if needed for HeroSection
 type Insight = {
   id: number;
   title: string;

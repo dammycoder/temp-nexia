@@ -1,22 +1,20 @@
 'use client'
 import React, { useRef, useEffect } from 'react'
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { renderDescription } from "@/_lib/utils";
 import { Bounded } from "@/_components/bouned";
 import {
   LinkedInIcon,
-  InstagramIcon,
   TwitterIcon,
 } from "@/_components/atoms/icons";
 import {InsightCard} from "@/_components/atoms/a-insight-card"
 import { scrollAnimations } from "@/_lib/animations";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/_components/ui/dialog';
+import { Button } from '@/_components/ui/button';
+import { DownloadCloudIcon } from 'lucide-react';
 
 
-const FlipbookViewer = dynamic(() => import("@/_components/flipbook-viewer"), {
-  ssr: false,
-});
 
 type InsightPageProps = {
   insightData: {
@@ -74,7 +72,7 @@ const InsightPage: React.FC<InsightPageProps> = ({ insightData, imageUrl, tags }
 
   const shareOnTwitter = () => {
     const text = `Check out this insight: ${insightData.title}`;
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
+    const url = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
     window.open(url, '_blank', 'width=600,height=400');
   };
 
@@ -121,14 +119,15 @@ const InsightPage: React.FC<InsightPageProps> = ({ insightData, imageUrl, tags }
 
       {/* CONTENT SECTION */}
       <Bounded className="flex flex-col lg:flex-row gap-12 py-12">
-        {/* LEFT: CONTENT */}
         <div className="w-full lg:w-3/5 space-y-6">
-          <div
+         {insightData?.content && (
+           <div
             className="prose max-w-none text-gray-800 leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: renderDescription(insightData.content),
             }}
           />
+      )}
 
           {/* TAGS */}
           {tags.length > 0 && (
@@ -136,7 +135,7 @@ const InsightPage: React.FC<InsightPageProps> = ({ insightData, imageUrl, tags }
               {tags.map((tag) => (
                 <Link
                   key={tag?.id}
-                  href={`/tags/${tag?.slug || tag?.name}`}
+                  href={`/tag/${encodeURIComponent(tag?.slug || tag?.name)}`}
                   className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded-sm px-3 py-1 text-xs font-semibold hover:text-white hover:bg-nexia-dark-teal-100 transition-colors"
                 >
                   {tag?.name}
@@ -145,9 +144,28 @@ const InsightPage: React.FC<InsightPageProps> = ({ insightData, imageUrl, tags }
             </div>
           )}
 
-          {insightData.resourceUrl && (
-            <FlipbookViewer resourceUrl="https://nexia.ng/wp-content/uploads/2024/09/Federal-Governments-One-time-Windfall-Tax-on-Realized-Foreign-Exchange-Profits-by-Nigerian-Banks.pdf" />
-          )}
+              <Dialog >
+          <DialogTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="inline-flex items-center gap-2 text-nexia-dark-teal-100 border border-nexia-dark-teal-100 px-4 py-2 rounded-full font-semibold hover:bg-nexia-dark-teal-100 hover:text-white transition-colors"
+            >
+              Download Resource <DownloadCloudIcon className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className=" !max-w-[90vw]">
+            <DialogHeader>
+              <DialogTitle>Preview</DialogTitle>
+            </DialogHeader>
+            <iframe
+                src={insightData.resourceUrl}
+                className="w-[80vw] h-[80vh] rounded-md border"
+                title="Resource Preview"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+          </DialogContent>
+        </Dialog>
         </div>
 
         <aside className="w-full lg:w-2/5 space-y-6">
@@ -167,12 +185,6 @@ const InsightPage: React.FC<InsightPageProps> = ({ insightData, imageUrl, tags }
                 className="cursor-pointer"
               >
                 <TwitterIcon className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors" />
-              </button>
-              <button
-                aria-label="Share on Instagram"
-                className="cursor-pointer"
-              >
-                <InstagramIcon className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors" />
               </button>
             </div>
           </div>

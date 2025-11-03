@@ -13,33 +13,82 @@ type InsightsClientProps = {
 };
 
 export default function InsightsClient({ categories }: InsightsClientProps) {
-    const [search, setSearch] = useState("");
-    const [category, setCategory] = useState<string | undefined>(undefined);
+    // Controlled input states
+    const [searchInput, setSearchInput] = useState("");
+    const [categoryInput, setCategoryInput] = useState<string | undefined>(undefined);
+    const [dateInput, setDateInput] = useState<string | undefined>(undefined);
 
-    const { data, error, isLoading } = useSWR(
-        ["/api/insights", search, category],
-        ([url, searchTerm, category]) =>
-            swrFetcher(url, undefined, {
-                query: {
-                    populate: { image: true },
-                    filters: {
-                        ...(searchTerm ? { title: { $containsi: searchTerm } } : {}),
-                        ...(category ? { category: { $eq: category } } : {}),
-                    },
-                    sort: ["datePublished:desc"],
-                    pagination: { page: 1, pageSize: 10 },
-                },
-            }),
-        { revalidateOnFocus: false }
-    );
+    // Applied filters state (triggers SWR)
+    const [appliedFilters, setAppliedFilters] = useState<{
+        search?: string;
+        category?: string;
+        date?: string;
+    }>({});
+
+    const [page, setPage] = useState(1);
+
+const { data, error, isLoading} = useSWR(
+  ["/api/insights", JSON.stringify(appliedFilters), page],
+  ([url, filtersStr, page]) => {
+    const filters = JSON.parse(filtersStr);
+
+    return swrFetcher(url, undefined, {
+      query: {
+        populate: { image: true },
+        filters: {
+          ...(filters.search ? { title: { $containsi: filters.search } } : {}),
+          ...(filters.category ? { category: { $eq: filters.category } } : {}),
+        },
+        sort: ["datePublished:desc"],
+        pagination: { page, pageSize: 10 },
+      },
+    });
+  },
+  { revalidateOnFocus: false }
+);
+
+
+    const handleSearch = () => {
+        setAppliedFilters({ search: searchInput, category: categoryInput, date: dateInput });
+        setPage(1); 
+    };
+
+    const handleViewAll = () => {
+        setSearchInput("");
+        setCategoryInput(undefined);
+        setDateInput(undefined);
+        setAppliedFilters({});
+        setPage(1);
+    };
+
+    const handleLoadMore = () => {
+        setPage((prev) => prev + 1);
+    };
+
+    const insightsData = data?.data ?? [];
 
     return (
         <div>
             <SearchSection
                 categories={categories}
-                onSearchChange={setSearch}
-                onCategoryChange={setCategory}
-            />
+                searchValue={searchInput}
+                categoryValue={categoryInput}
+                dateValue={dateInput}
+                onSearchChange={setSearchInput}
+                onCategoryChange={setCategoryInput}
+                onDateFilterChange={setDateInput}
+                onSubmit={handleSearch}
+                loading={isLoading}
+            >
+                <div className="flex gap-2 mt-2">
+                    <button
+                        onClick={handleViewAll}
+                        className="px-4 py-2 border rounded hover:bg-gray-100"
+                    >
+                        View All
+                    </button>
+                </div>
+            </SearchSection>
 
             <SubscribeSection />
 
@@ -49,13 +98,32 @@ export default function InsightsClient({ categories }: InsightsClientProps) {
                 </div>
             )}
 
-            {error && (
-                <div className="text-center  py-6">
-                    Nothing to see here
+            {!isLoading && insightsData.length === 0 && (
+                <div className="text-center py-6 text-nexia-dark-teal-100">
+                    No insights found.
                 </div>
             )}
 
-            {data && data?.data?.length > 0 && <InsightsSection insights={data?.data} />}
+            {error && (
+               <div className="text-center py-6 text-nexia-dark-teal-100">
+                    No insights found.
+                </div>
+            )}
+
+            {insightsData.length > 0 && <InsightsSection insights={insightsData} />}
+
+            {insightsData.length > 0 && data?.meta?.pagination?.page < data?.meta?.pagination?.pageCount && (
+                <div className="flex justify-center mt-6">
+                    <button
+                        onClick={handleLoadMore}
+                        disabled={isLoading}
+                        className="px-6 py-2 bg-nexia-dark-teal-100 text-white rounded hover:bg-nexia-light-teal-100 transition"
+                    >
+                        {isLoading ? <Loader className="animate-spin w-5 h-5" /> : "Next "}
+                    </button>
+                </div>
+            )}
+
 
         </div>
     );

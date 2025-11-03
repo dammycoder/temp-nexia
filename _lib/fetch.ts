@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { flattenAttributes } from "./utils";
 import qs from "qs";
 
@@ -67,4 +68,35 @@ export async function swrFetcher(url: string, authToken?: string, options?: { qu
 
     const data = await response.json();
     return data; // Return raw Strapi response without flattening
+}
+
+export async function swrMutationFetcher(
+    url: string, 
+    { arg }: { arg: { 
+        method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+        body?: any;
+        authToken?: string;
+        headers?: Record<string, string>;
+    } }
+) {
+    const { method = 'POST', body, headers: customHeaders } = arg;
+
+    const baseUrl = url.startsWith("http") ? "" : (getBaseUrl() || "");
+    const fullUrl = `${baseUrl}${url}`;
+
+    const response = await fetch(fullUrl, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(customHeaders || {}),
+        },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({ message: 'Request failed' }));
+        throw new Error(error.message || 'Request failed');
+    }
+
+    return response.json();
 }

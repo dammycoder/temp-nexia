@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./global.css";
 import Footer from "@/_components/organisms/o-footer";
+import { Toaster } from "@/components/ui/sonner"
+
 
 import { effraRegular, effraLight, effraBold, taho } from "@/fonts";
 import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
@@ -78,6 +80,7 @@ export default function RootLayout({
         {children}
 
         <Footer />
+          <Toaster richColors position="top-right" />
 
         <Script
           src="https://cookiechimp.com/widget/8J5tVJZ.js"

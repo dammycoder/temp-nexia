@@ -2,11 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Bounded } from "@/_components/bouned";
-import {
-  LinkedInIcon,
-  InstagramIcon,
-  TwitterIcon,
-} from "@/_components/atoms/icons";
 import { strapiFetch } from "@/_lib/strapi";
 import { getStrapiMedia } from "@/_lib/utils";
 
@@ -35,6 +30,8 @@ type SubLink = {
   href: string;
   external?: boolean;
 };
+
+
 
 type FooterLink = {
   id: number;
@@ -125,9 +122,23 @@ export default async function Footer() {
           </div>
         </Bounded>
         <Bounded className="mt-3 flex items-center gap-3 lg:justify-end">
-          <LinkedInIcon />
-          <InstagramIcon />
-          <TwitterIcon />
+            {footerData?.socialLinks?.map((social, idx) => (
+            <Link
+              key={idx}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {social.image?.url && (
+                <Image
+                  src={getStrapiMedia(social?.image?.url) ?? ''}
+                  alt={`Social Link ${idx}`}
+                  width={24}
+                  height={24}
+                />
+              )}
+            </Link>
+          ))}
         </Bounded>
       </footer>
       <div className="bg-nexia-dark-teal-100 font-effra py-8">

@@ -28,36 +28,46 @@ type ContentByTagResponse = {
   insights: FlatInsight[];
 };
 
-export default async function TagPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams?: { [key: string]: string | string[] | undefined } }) {
+export default async function TagPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const { slug } = await params;
-  const sp = searchParams || {};
-  const pageParam = Array.isArray(sp.page) ? sp.page[0] : sp.page;
+
+  const content = await getContentByTag(slug, 1, 10) as ContentByTagResponse;
+
+
+
+  const events = (content.events || []).map((e) => ({ ...e, type: 'event' as const }));
+  const insights = (content.insights || []).map((i) => ({ ...i, type: 'insight' as const }));
+  
+  const allContent = [...events, ...insights];
+  
   const pageSize = 9;
-  const currentPage = Math.max(1, parseInt(pageParam || '1', 10) || 1);
-
-  const content = (await getContentByTag(slug)) as ContentByTagResponse;
-
-  const events = (content?.events || []).map((e) => ({ ...e, type: 'event' as const }));
-  const insights = (content?.insights || []).map((i) => ({ ...i, type: 'insight' as const }));
-  const all = [...events, ...insights];
-  const totalItems = all.length;
+  const totalItems = allContent.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  const safePage = Math.min(currentPage, totalPages);
-  const start = (safePage - 1) * pageSize;
-  const paginatedContent = all.slice(start, start + pageSize);
-
+  const currentPage = 1; 
+  const start = (currentPage - 1) * pageSize;
+  const paginatedContent = allContent.slice(start, start + pageSize);
+  
   return (
-    <TagPageClient 
-      params={{ slug }} 
-      initialContent={content} 
+    <TagPageClient
+      params={{ slug }}
+      initialContent={content}
       paginatedContent={paginatedContent}
-      pagination={{ totalItems, totalPages, currentPage: safePage, pageSize }}
+      pagination={{ totalItems, totalPages, currentPage, pageSize }}
     />
   );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const {slug:tag} = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug: tag } = await params;
   const title = `"${tag}" | Nexia Agbo Abel & Co`;
   const description = `Explore all content tagged with "${tag}" including insights, events, and more from Nexia Agbo Abel & Co.`;
   const url = `https://nexia.ng/tag/${tag}`;

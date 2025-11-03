@@ -6,9 +6,7 @@ import Link from "next/link";
 import { strapiFetch } from "@/_lib/strapi";
 import { getStrapiMedia } from "@/_lib/utils";
 
-interface Props {
-  params: { slug: string };
-}
+
 
 export interface StrapiImageFormat {
   name: string;
