@@ -45,7 +45,6 @@ const HeroSection = ({ title, description}: Props) => {
         lg:bg-cover lg:bg-center lg:bg-no-repeat
       "
     >
-      {/* Preload image for large screens */}
       <link rel="preload" href="/assets/jpg/bg-about.jpg" as="image" />
 
       <div
