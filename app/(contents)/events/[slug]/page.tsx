@@ -14,6 +14,7 @@ type EventData = {
   category: string;
   contents: any[];
   datePublished: string;
+  YoutubeLink?:string
   image: { url: string };
   tags: Array<{
     id: number;
@@ -125,6 +126,7 @@ export default async function Page({ params }: Readonly<{ params: Promise<{ slug
           relatedMedia={relatedMedia} 
           tags={eventData?.tags}
           eventTitle={eventData?.title} 
+          YoutubeLink={eventData?.YoutubeLink}
         />
       </div>
   );

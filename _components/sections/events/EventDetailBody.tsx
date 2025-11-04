@@ -10,6 +10,8 @@ import {
 import { scrollAnimations } from "@/_lib/animations";
 import Link from "next/link";
 import Image from "next/image";
+import { getYouTubeVideoId } from "@/_lib/utils";
+
 
 type EventDetailBodyProps = {
   contents?: any[] | null;
@@ -17,6 +19,7 @@ type EventDetailBodyProps = {
   tags: Array<{ id: number; name: string; slug?: string }>;
   relatedMedia?: any[] | null;
   eventTitle?: string;
+  YoutubeLink?:string;
 };
 
 export default function EventDetailBody({
@@ -25,6 +28,7 @@ export default function EventDetailBody({
   relatedMedia,
   tags,
   eventTitle = "",
+  YoutubeLink
 }: EventDetailBodyProps) {
   const leftRef = useRef<HTMLDivElement | null>(null);
   const shareRef = useRef<HTMLDivElement | null>(null);
@@ -67,6 +71,10 @@ export default function EventDetailBody({
     }
   }, []);
 
+    const videoId = getYouTubeVideoId(YoutubeLink ?? "");
+  
+
+
   return (
     <Bounded className="flex flex-col justify-between gap-10 py-8 lg:flex-row">
       <div ref={leftRef} className="w-full lg:w-7/10">
@@ -76,7 +84,6 @@ export default function EventDetailBody({
           />
         )}
 
-        {/* Fixed Related Media Section */}
         {Array.isArray(relatedMedia) && relatedMedia.length > 0 && (
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedMedia.map((media: any) => {
@@ -103,11 +110,26 @@ export default function EventDetailBody({
           </div>
         )}
 
+        {YoutubeLink && (
+  <div className="mt-6 aspect-video w-full overflow-hidden rounded-lg shadow-md">
+    <iframe
+      width="100%"
+      height="100%"
+        src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+      title="YouTube video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+      className="rounded-lg"
+    />
+  </div>
+)}
+
         <div className="mt-5 flex flex-wrap gap-2">
           {tags?.map((tag: any) => (
             <Link
               key={tag?.id}
-              href={`/tag/${tag.name}`}
+              href={`/tag/${encodeURIComponent(tag?.slug || tag?.name)}`}
               className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded px-2 py-1 text-xs hover:text-white transition-colors"
             >
               {tag?.name}

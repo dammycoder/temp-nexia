@@ -31,7 +31,6 @@ type InsightsSectionProps = {
 };
 
 const InsightsSection = ({ insights }: InsightsSectionProps) => {
-  console.log(insights)
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);

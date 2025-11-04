@@ -14,6 +14,17 @@ function getBaseUrl(): string | undefined {
     return url ? url.replace(/\/$/, "") : undefined;
 }
 
+export const getStrapiConfig = () => {
+  return {
+    url: process.env.NEXT_PUBLIC_STRAPI_URL, 
+    token: process.env.NEXT_PUBLIC_FORM_TOKEN, 
+  };
+};
+
+
+
+
+
 export async function fetchData(url: string, authToken?: string, options?: FetchDataOptions) {
     const { query, headers: customHeaders } = options || {};
 

@@ -20,12 +20,12 @@ interface TeamMember {
     width: number;
     height: number;
   };
+  order: number;
 }
 
 interface Props {
   data: TeamMember[];
 }
-
 
 const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
   member,
@@ -88,14 +88,15 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
   );
 };
 
-const MeetTheTeamSection = ({data}:Props) => {
+const MeetTheTeamSection = ({ data }: Props) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const sortedTeamMembers = [...data].sort((a, b) => a.order - b.order);
 
   useEffect(() => {
     if (!sectionRef.current || !titleRef.current) return;
 
-    // Animate title first
     scrollAnimations.onScroll(
       titleRef.current,
       {
@@ -119,8 +120,8 @@ const MeetTheTeamSection = ({data}:Props) => {
         Meet the Team
       </h2>
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(250px,1fr))] gap-6 sm:grid-cols-2 sm:gap-8 md:gap-10 lg:grid-cols-3 xl:grid-cols-4">
-        {data.map((member, index) => (
-          <TeamMemberCard key={member.name} member={member} index={index} />
+        {sortedTeamMembers.map((member, index) => (
+          <TeamMemberCard key={member?.id} member={member} index={index} />
         ))}
       </div>
     </Bounded>

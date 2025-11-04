@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { Bounded } from "@/_components/bouned";
 import { scrollAnimations } from "@/_lib/animations";
+import { getYouTubeVideoId } from "@/_lib/utils";
 
 interface MediaItem {
   id: string;
@@ -14,39 +15,6 @@ interface Props {
   data: MediaItem[] | undefined;
 }
 
-// Helper function to extract YouTube video ID from various URL formats
-const getYouTubeVideoId = (url: string): string => {
-  if (!url) return '';
-  
-  try {
-    // Ensure URL has protocol
-    const fullUrl = url.startsWith('http') ? url : `https://${url}`;
-    const urlObj = new URL(fullUrl);
-    
-    let videoId = '';
-    
-    // Handle youtu.be format
-    if (urlObj.hostname === 'youtu.be') {
-      videoId = urlObj.pathname.slice(1).split('?')[0];
-    }
-    // Handle youtube.com format
-    else if (urlObj.hostname.includes('youtube.com')) {
-      // Check query parameter (watch?v=...)
-      videoId = urlObj.searchParams.get('v') || '';
-      
-      // Check pathname for embed/v URLs
-      if (!videoId) {
-        const pathMatch = urlObj.pathname.match(/\/(embed|v)\/([^/?]+)/);
-        videoId = pathMatch?.[2] || '';
-      }
-    }
-    
-    return videoId;
-  } catch (error) {
-    console.error('Error parsing YouTube URL:', url, error);
-    return '';
-  }
-};
 
 const MediaCard: React.FC<{ media: MediaItem; index: number }> = ({ media, index }) => {
   const cardRef = useRef<HTMLDivElement>(null);
