@@ -108,8 +108,7 @@ export default function SearchPage() {
       } else {
         setHasMore(true);
       }
-    } catch (err) {
-      console.error(err);
+    } catch  {
       setError("Failed to fetch results");
     } finally {
       setLoading(false);

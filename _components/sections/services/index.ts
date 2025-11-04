@@ -4,4 +4,3 @@ export { default as CaseStudySection } from "@/_components/sections/services/Cas
 export { default as MainServicesSection } from "@/_components/sections/services/ServicesSection";
 export { default as WhatTheySaySection } from "@/_components/sections/services/WhatTheySaySection";
 export { RelatedInsightsSection } from "@/_components/sections/services/RelatedInsights";
-export { default as HowWeCanHelpSection } from "@/_components/sections/services/HowWeCanHelpSection";

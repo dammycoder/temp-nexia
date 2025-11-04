@@ -23,6 +23,7 @@ interface TeamMember {
   position: string;
   email: string;
   slug: string;
+  order:number;
   image: {
     id: number;
     url: string;
@@ -48,7 +49,7 @@ type Value = {
 
 
 
-export default async function About() {
+export default async function AboutPage() {
   const aboutPage = await strapiFetch<{
     data: {
       id: number;
@@ -83,17 +84,22 @@ export default async function About() {
     next: { revalidate: 60 },
   });
 
-  const teamMembers = await strapiFetch<{ data: TeamMember[] }>("/api/team-members", {
+  const teamMembersPromise = strapiFetch<{ data: TeamMember[] }>(
+    "/api/team-members",
+    {
+      query: {
+        populate: { image: true },
+      },
+    }
+  );
+
+  const statsPromise = strapiFetch<{ data: Stat[] }>("/api/stats", {
     query: {
-      populate: { image: true },
+      populate: "*",
     },
   });
 
-  const stats = await strapiFetch<{ data: Stat[] }>("/api/stats", {
-    query: {
-      populate: "*"
-    },
-  });
+  const [teamMembers, stats] = await Promise.all([teamMembersPromise, statsPromise]);
   const pageData = aboutPage?.data;
   const TeamData = teamMembers?.data;
   const statsData = stats?.data;
@@ -115,4 +121,4 @@ export default async function About() {
   );
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60; 

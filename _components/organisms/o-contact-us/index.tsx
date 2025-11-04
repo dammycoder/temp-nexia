@@ -126,7 +126,6 @@ const ContactForm: React.FC = () => {
           element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       } else {
-        console.error("Submission error:", err);
         toast.error("Failed to send message. Please try again later.");
       }
     }
@@ -134,7 +133,6 @@ const ContactForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-6 lg:w-1/2">
-      {/* Reason for Contact */}
       <div>
         <NativeSelect 
           name="reason" 
@@ -155,7 +153,6 @@ const ContactForm: React.FC = () => {
         )}
       </div>
 
-      {/* Name and Email */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Input 

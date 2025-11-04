@@ -132,8 +132,7 @@ export const getYouTubeVideoId = (url: string): string => {
     }
     
     return videoId;
-  } catch (error) {
-    console.error('Error parsing YouTube URL:', url, error);
+  } catch  {
     return '';
   }
 };

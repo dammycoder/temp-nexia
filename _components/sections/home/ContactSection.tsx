@@ -38,7 +38,7 @@ const ContactSection = () => {
           quality={80}
           loading="lazy"
           placeholder="blur"
-          blurDataURL="/assets/jpg/profile-placeholder.png"
+          blurDataURL="/assets/jpg/profile-placeholder.svg"
           unoptimized={true}
           className="w-full object-cover max-h-[600px]"
         />
