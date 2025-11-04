@@ -43,6 +43,7 @@ const HeroSection = ({ title, description}: Props) => {
         lg:h-[70vh]
         lg:bg-[url('/assets/jpg/bg-about.jpg')]
         lg:bg-cover lg:bg-center lg:bg-no-repeat
+        transition-none
       "
     >
       <link rel="preload" href="/assets/jpg/bg-about.jpg" as="image" />

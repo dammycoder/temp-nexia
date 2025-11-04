@@ -23,15 +23,15 @@ export default function EventsHero({
   }, []);
 
   return (
-    <div className="relative flex lg:h-[70vh] items-center lg:items-end">
+    <div     className="
+        relative flex items-center lg:items-end 
+        bg-white
+        lg:h-[70vh]
+        lg:bg-[url('/assets/webp/pexels-lucianphotography-3566187.webp')]
+        lg:bg-cover lg:bg-center lg:bg-no-repeat
+        transition-none
+      ">
       <link rel="preload" href={backgroundImage} as="image" />
-
-      <div
-        className="hidden lg:block absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('${backgroundImage}')`,
-        }}
-      />
 
       <div
         ref={contentRef}
