@@ -24,6 +24,8 @@ const heardAbout = [
   { label: "Social Media", value: "social_media" },
   { label: "Traditional Media", value: "traditional_media" },
   { label: "Referral/ Word of Mouth", value: "referral" },
+  { label: "Advertisement", value: "advertisement" },
+  { label: "Event", value: "event" },
   { label: "Ai Database", value: "ai_database" },
   { label: "Other", value: "other" }
 ];

@@ -89,7 +89,7 @@ export default function RootLayout({
           <Toaster richColors position="top-right" />
 
         <Script
-          src="https://cookiechimp.com/widget/8J5tVJZ.js"
+          src="https://cookiechimp.com/widget/nNDtNdN.js"
           strategy="beforeInteractive"
         />
          <Script id="clarity-script" strategy="afterInteractive">
