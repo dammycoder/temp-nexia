@@ -170,18 +170,25 @@ export default function EventDetailBody({
           <div className="mt-4 flex flex-col gap-4">
             {relatedEvents?.map((event) => (
               <Link href={`/events/${event.slug}`} key={event.id}>
-                <div className="flex gap-4 items-center rounded-xl border p-4 transition-colors hover:bg-gray-100">
-                  <div className="w-1/3">
-                    <Image 
+                <div   className="relative bg-white rounded-tr-4xl rounded-bl-4xl w-full shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 flex flex-col "
+>
+                 
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                          <Image
+                      
                       src={getStrapiMedia(event?.image?.url) ?? "/assets/jpg/profile-placeholder.svg"} 
-                      width={150} 
-                      height={150} 
                       alt={event?.title}
-                      className="w-full h-auto rounded-lg"
-                    />
-                  </div>
-                  <div className="w-2/3">
-                    <p className="text-nexia-dark-teal-100 font-bold text-lg">
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 400px"
+                          />
+                
+                        
+                        </div>
+                
+                  <div className="w-2/3 p-4">
+                    <p className="text-nexia-dark-teal-100 font-bold text-lg hover:text-nexia-light-teal-100 transition-colors">
                       {event?.title}
                     </p>
                     
@@ -196,7 +203,7 @@ export default function EventDetailBody({
                       ))}
                     </div>
 
-                    <div className="mt-2 text-nexia-gray text-sm">
+                    <div className="mt-2 text-nexia-gray text-sm truncate">
                       {event?.description}
                     </div>
                   </div>

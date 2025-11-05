@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/assets/png/logo.png",
+        url: "https://nexia.ng/_next/image?url=%2Fassets%2Fpng%2Flogo.png&w=256&q=100",
         width: 1200,
         height: 630,
         alt: "Nexia Global Network",
