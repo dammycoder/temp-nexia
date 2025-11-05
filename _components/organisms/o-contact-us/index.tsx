@@ -50,7 +50,6 @@ const ContactForm: React.FC = () => {
     phone: "",
     message: "",
     heardAbout: "",
-    locationId: "",
     agree: false,
   });
 
@@ -104,7 +103,6 @@ const ContactForm: React.FC = () => {
         phone: "",
         message: "",
         heardAbout: "",
-        locationId: "",
         agree: false,
       });
 
