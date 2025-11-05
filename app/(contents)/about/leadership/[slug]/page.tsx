@@ -30,6 +30,7 @@ const fetchLeadershipBySlug = async (slug: string) => {
       bio: string;
       position: string;
       phone: string;
+      order:number;
       expertise: Array<{ id: number; title: string }>;
       qualifications: Array<{ id: number; title: string }>;
       image: {
@@ -128,7 +129,7 @@ export default async function Page({ params }: Readonly<{ params: Promise<{ slug
                 getStrapiMedia(leadership?.image?.url) ??
                 "/assets/jpg/profile-placeholder.svg"
               }
-              alt={leadership.name}
+              alt={leadership?.name}
               width={180}
               height={180}
               sizes="(max-width: 768px) 100vw, 180px"
@@ -138,7 +139,7 @@ export default async function Page({ params }: Readonly<{ params: Promise<{ slug
 
           <div className="flex flex-col gap-2 lg:ml-5">
             <p className="text-nexia-light-teal-100 text-3xl md:text-2xl lg:text-5xl">
-              {leadership.name}
+              {leadership?.name}
             </p>
             <Link
               href={`mailto:${leadership?.email}`}
