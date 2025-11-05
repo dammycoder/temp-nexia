@@ -86,19 +86,19 @@ export async function generateMetadata(
   }
 
   return {
-    title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-    description: leadership.bio || undefined,
+    title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+    description: leadership?.bio || undefined,
     alternates: { canonical: `https://nexia.ng/about/leadership/${slug}` },
     openGraph: {
-      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-      description: leadership.bio || undefined,
+      title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+      description: leadership?.bio || undefined,
       url: `https://nexia.ng/about/leadership/${slug}`,
       type: "profile",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-      description: leadership.bio || undefined,
+      title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+      description: leadership?.bio || undefined,
     },
   };
 }

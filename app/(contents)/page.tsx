@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
   title:
     "Home | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
-  description: "idk",
+  description: "Nexia Agbo Abel & Co. is a multi-skill firm providing audit and assurance services, and tailored, innovative, cost-effective services.",
 };
 
 export default async function Home() {

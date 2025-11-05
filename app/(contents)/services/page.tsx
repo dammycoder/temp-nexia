@@ -15,6 +15,7 @@ import { strapiFetch } from "@/_lib/strapi";
 export const metadata: Metadata = {
   title:
     "Services | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+    description:"Specialists work with you on a wide range of issues from audit, tax and advisory, including legal services, delivered through a proactive, partner-led approach."
 };
 
 

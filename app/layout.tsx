@@ -39,6 +39,12 @@ export const metadata: Metadata = {
     "independent firms",
     "auditing",
     "business advisory",
+    "corporate support services",
+    "advisory services",
+    "audit",
+    "tax",
+    "Nexia agbo abel and co",
+
   ],
   metadataBase: new URL("https://nexia.ng"),
   referrer: "origin-when-cross-origin",
@@ -52,7 +58,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/assets/png/logo.png",
         width: 1200,
         height: 630,
         alt: "Nexia Global Network",

@@ -15,6 +15,7 @@ import { strapiFetch } from "@/_lib/strapi";
 export const metadata: Metadata = {
   title:
     "About Us | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+    description: "Nexia Nigeria is a multi-skill advisory firm established in 2004, with offices in Abuja, Lagos, and Kaduna, offering services like audit, tax, and advisory.",
 };
 
 interface TeamMember {

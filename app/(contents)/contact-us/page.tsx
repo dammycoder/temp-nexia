@@ -3,11 +3,37 @@ import type { Metadata } from "next";
 import { Bounded } from "@/_components/bouned";
 import { strapiFetch } from "@/_lib/strapi";
 import ContactForm from "@/_components/organisms/o-contact-us";
+export async function generateMetadata(): Promise<Metadata> {
 
-export const metadata: Metadata = {
-  title:
-    "Contact Us | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
-};
+ const globalData = await strapiFetch<{
+    data: {
+      location: Array<{
+        id: string;
+        title: string;
+        location: string;
+        phone: string;
+      }>;
+    };
+  }>("/api/global", {
+    query: { populate: ["location"] },
+  });
+
+  const locations = globalData?.data?.location;
+  
+  const locationDescriptions = locations?.map(loc => 
+    `${loc?.title}: ${loc?.location} · ${loc?.phone}`
+  ).join(' ; ') || "Contact Nexia Agbo Abel & Co for professional accounting and consulting services";
+
+  return {
+    title: "Contact Us | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+    description: locationDescriptions,
+    openGraph: {
+      title: "Contact Us | Nexia Agbo Abel & Co",
+      description: locationDescriptions,
+      type: "website",
+    },
+  };
+}
 
 const globalData = await strapiFetch<{
   data: {

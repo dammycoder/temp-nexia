@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import HeroSection from "@/_components/sections/insights/HeroSection";
 import UsefulLinksSection from "@/_components/sections/insights/UsefulLinksSection";
 import { strapiFetch } from "@/_lib/strapi";
-import InsightsClient from "@/_components/organisms/o-insights"; // ✅ your new client component
+import InsightsClient from "@/_components/organisms/o-insights"; 
 
 export const metadata: Metadata = {
   title:
     "Insights | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+    description: "Insights include articles, news, Nexia Business Series, and topics like a windfall tax, withholding tax, and dark web cybercrimes."
 };
 
 type Insight = {
