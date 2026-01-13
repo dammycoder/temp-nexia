@@ -61,6 +61,7 @@ export default function EventsCategorySection({ id, title, description, events }
             datePublished: e?.datePublished,
             contents: e?.description,
             slug: e?.slug,
+            description: e?.description,
           };          
           return <EventCard key={event?.id} {...card} />;
         })}

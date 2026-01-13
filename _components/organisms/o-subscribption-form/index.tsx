@@ -1,7 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, memo } from "react";
 import * as Yup from "yup";
+import useSWRMutation from "swr/mutation";
+import { swrMutationFetcher } from "@/_lib/fetch";
+import { getStrapiConfig } from "@/_lib/fetch";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const subscribeSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -12,7 +17,7 @@ const subscribeSchema = Yup.object().shape({
   company: Yup.string().optional(),
 });
 
-export default function SubscribeForm() {
+function SubscribeForm() {
   const [form, setForm] = useState({
     name: "",
     surname: "",
@@ -20,23 +25,40 @@ export default function SubscribeForm() {
     company: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [success, setSuccess] = useState("");
+  const { token } = getStrapiConfig();
+  
+  const { trigger, isMutating } = useSWRMutation("/api/subscribers", swrMutationFetcher);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    
+    if (errors[e.target.name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[e.target.name];
+        return newErrors;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    setSuccess("");
 
     try {
       await subscribeSchema.validate(form, { abortEarly: false });
 
-      await new Promise((r) => setTimeout(r, 1000));
+      await trigger({
+        method: 'POST',
+        body: {
+          data: form,
+        },
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
 
-      setSuccess("Thank you for subscribing!");
+      toast.success("Thank you for subscribing!");
       setForm({ name: "", surname: "", email: "", company: "" });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -45,6 +67,8 @@ export default function SubscribeForm() {
           if (e.path) newErrors[e.path] = e.message;
         });
         setErrors(newErrors);
+      } else {
+        toast.error("Failed to subscribe. Please try again later.");
       }
     }
   };
@@ -65,6 +89,7 @@ export default function SubscribeForm() {
               value={form.name}
               onChange={handleChange}
               className="w-full border-b p-2 outline-none"
+              disabled={isMutating}
             />
             {errors.name && (
               <p className="text-sm text-red-600">{errors.name}</p>
@@ -78,6 +103,7 @@ export default function SubscribeForm() {
               value={form.surname}
               onChange={handleChange}
               className="w-full border-b p-2 outline-none"
+              disabled={isMutating}
             />
             {errors.surname && (
               <p className="text-sm text-red-600">{errors.surname}</p>
@@ -91,6 +117,7 @@ export default function SubscribeForm() {
               value={form.email}
               onChange={handleChange}
               className="w-full border-b p-2 outline-none"
+              disabled={isMutating}
             />
             {errors.email && (
               <p className="text-sm text-red-600">{errors.email}</p>
@@ -104,6 +131,7 @@ export default function SubscribeForm() {
               value={form.company}
               onChange={handleChange}
               className="w-full border-b p-2 outline-none"
+              disabled={isMutating}
             />
             {errors.company && (
               <p className="text-sm text-red-600">{errors.company}</p>
@@ -111,21 +139,27 @@ export default function SubscribeForm() {
           </div>
         </div>
 
-        {success && <p className="mt-4 text-green-600">{success}</p>}
-
         <button
           type="submit"
-          className="bg-nexia-dark-teal-100 mt-6 w-[200px] px-6 py-3 text-white transition-all hover:bg-nexi-light-teal-100"
+          disabled={isMutating}
+          className="bg-nexia-dark-teal-100 mt-6 flex w-[200px] items-center justify-center px-6 py-3 text-white transition-all hover:bg-nexi-light-teal-100 disabled:opacity-50"
         >
-          Submit
+          {isMutating ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Subscribing...
+            </span>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
 
       <div className="mt-8">
-        <p className="text-nexia-dark-teal-100 text-sm max-w-2xl">
+        <p className="text-nexia-dark-teal-100 max-w-2xl text-sm">
           By submitting this subscription form you will be providing some
           personal data to Nexia Agbo Abel & Co and will need to consent to the
-          way that Nexia Agbo Abel & Co processes your personal data. <Link className="font-extrabold underline"href="/privacy-policy">Click here </Link>
+          way that Nexia Agbo Abel & Co processes your personal data. <Link className="font-extrabold underline" href="/privacy-policy">Click here </Link>
           to see the privacy statement, which provides information on how Nexia
           Agbo Abel & Co collects and processes your personal data.
         </p>
@@ -133,3 +167,5 @@ export default function SubscribeForm() {
     </>
   );
 }
+
+export default memo(SubscribeForm);

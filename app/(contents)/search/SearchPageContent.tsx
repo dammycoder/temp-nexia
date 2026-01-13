@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -53,8 +54,66 @@ export default function SearchPage() {
   const search = searchParams?.get("s");
 
   const [results, setResults] = useState<SearchResult>({ events: [], insights: [] });
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchResults = async (reset = false) => {
+    if (!search) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data: any = await searchContent(search, reset ? 1 : page, pageSize);
+
+      const events: Event[] = (data?.events || []).map((item: any) => ({
+        id: item?.id,
+        title: item?.title,
+        description: item?.description,
+        slug: item?.slug,
+        datePublished: item?.datePublished,
+        author: item?.author,
+        category: item?.category,
+        image: item?.image || undefined,
+        tags: item?.tags || [],
+      }));
+
+      const insights: Insight[] = (data?.insights || []).map((item: any) => ({
+        id: item?.id,
+        title: item?.title,
+        contents: item?.contents,
+        slug: item?.slug,
+        datePublished: item?.datePublished,
+        category: item?.category,
+        image: item?.image || undefined,
+        tags: item?.tags || [],
+      }));
+
+      if (reset) {
+        setResults({ events, insights });
+        setPage(2);
+      } else {
+        setResults((prev) => ({
+          events: [...prev.events, ...events],
+          insights: [...prev.insights, ...insights],
+        }));
+        setPage((prev) => prev + 1);
+      }
+
+      // If returned items < pageSize, no more results
+      if ((events.length + insights.length) < pageSize) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+    } catch  {
+      setError("Failed to fetch results");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!search) {
@@ -62,46 +121,8 @@ export default function SearchPage() {
       return;
     }
 
-    async function fetchResults() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data: any = await searchContent(search ?? "");
-
-        const events: Event[] = (data?.events || []).map((item: any) => ({
-          id: item?.id,
-          title: item?.title,
-          description: item?.description,
-          slug: item?.slug,
-          datePublished: item?.datePublished,
-          author: item?.author,
-          category: item?.category,
-          image: item?.image || undefined,
-          tags: item?.tags || [],
-        }));
-
-        const insights: Insight[] = (data?.insights || []).map((item: any) => ({
-          id: item?.id,
-          title: item?.title,
-          contents: item?.contents,
-          slug: item?.slug,
-          datePublished: item?.datePublished,
-          category: item?.category,
-          image: item?.image || undefined,
-          tags: item?.tags || [],
-        }));
-
-        setResults({ events, insights });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchResults();
-  }, [search, router]);
+    fetchResults(true);
+  }, [search,  router]);
 
   if (!search) return null;
 
@@ -116,7 +137,6 @@ export default function SearchPage() {
             <h1 className="text-white text-4xl md:text-5xl font-light font-effra-light">
               Results for: &quot;{search}&quot;
             </h1>
-        
           </div>
         </Bounded>
       </div>
@@ -158,103 +178,104 @@ export default function SearchPage() {
 
           {!loading && !error && totalResults > 0 && (
             <div className="space-y-12">
-              {/* Events */}
-              {results.events.length > 0 && (
-                <section>
-                  
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {results.events.map((event) => (
-                      <Link
-                        key={event?.id}
-                        href={`/events/${event?.slug ?? ''}`}
-                        className="block h-full group"
-                      >
-                        <div className="relative h-fit bg-white rounded-tr-4xl rounded-bl-4xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
-                          {event?.image?.url && (
-                            <div className="relative h-48 w-full overflow-hidden">
-                              <Image
-                                src={getStrapiMedia(event?.image?.url) || "/assets/jpg/events.jpg"}
-                                alt={event?.image?.alternativeText ?? event?.title ?? ''}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                            </div>
-                          )}
-                          <div className="p-6">
-                            {event?.category && (
-                              <span className="inline-block px-3 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-full mb-3">
-                                {event?.category}
-                              </span>
-                            )}
-                            <h3 className="text-xl font-bold text-nexia-dark-teal-100 mb-2 line-clamp-2 group-hover:text-nexia-light-teal-100 transition-colors">
-                              {event?.title}
-                            </h3>
-                            {event?.description && (
-                              <p className="text-gray-600 text-sm line-clamp-3">
-                                {event?.description?.replace(/<[^>]*>/g, '')}
-                              </p>
-                            )}
-                            {event?.datePublished && (
-                              <p className="text-sm text-gray-500 mt-3">
-                                {new Date(event?.datePublished).toLocaleDateString()}
-                              </p>
-                            )}
+              {/* Events + Insights */}
+              <section>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {results.events.map((event) => (
+                    <Link
+                      key={event?.id}
+                      href={`/events/${event?.slug ?? ''}`}
+                      className="block h-full group"
+                    >
+                      <div className="relative h-fit bg-white rounded-tr-4xl rounded-bl-4xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+                        {event?.image?.url && (
+                          <div className="relative h-48 w-full overflow-hidden">
+                            <Image
+                              src={getStrapiMedia(event?.image?.url) || "/assets/jpg/events.jpg"}
+                              alt={event?.image?.alternativeText ?? event?.title ?? ''}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
                           </div>
+                        )}
+                        <div className="p-6">
+                          {event?.category && (
+                            <span className="inline-block px-3 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-lg mb-3">
+                              {event?.category}
+                            </span>
+                          )}
+                          <h3 className="text-xl font-bold text-nexia-dark-teal-100 mb-2 line-clamp-2 group-hover:text-nexia-light-teal-100 transition-colors">
+                            {event?.title}
+                          </h3>
+                          {event?.description && (
+                            <p className="text-gray-600 text-sm line-clamp-3">
+                              {event?.description?.replace(/<[^>]*>/g, '')}
+                            </p>
+                          )}
+                          {event?.datePublished && (
+                            <p className="text-sm text-gray-500 mt-3">
+                              {new Date(event?.datePublished).toLocaleDateString()}
+                            </p>
+                          )}
                         </div>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              )}
+                      </div>
+                    </Link>
+                  ))}
 
-              {/* Insights */}
-              {results.insights.length > 0 && (
-                <section>
-                 
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {results.insights.map((insight) => (
-                      <Link
-                        key={insight?.id}
-                        href={`/insights/${insight?.slug ?? ''}`}
-                        className="block h-full group"
-                      >
-                        <div className="relative h-fit bg-white rounded-tr-4xl rounded-bl-4xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
-                          {insight?.image?.url && (
-                            <div className="relative h-48 w-full overflow-hidden">
-                              <Image
-                                src={getStrapiMedia(insight?.image?.url) || "/assets/jpg/insights.jpg"}
-                                alt={insight?.image?.alternativeText ?? insight?.title ?? ''}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                            </div>
-                          )}
-                          <div className="p-6">
-                            {insight?.category && (
-                              <span className="inline-block px-3 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-full mb-3">
-                                {insight?.category}
-                              </span>
-                            )}
-                            <h3 className="text-xl font-bold text-nexia-dark-teal-100 mb-2 line-clamp-2 group-hover:text-nexia-light-teal-100 transition-colors">
-                              {insight?.title}
-                            </h3>
-                            {insight?.contents && (
-                              <p className="text-gray-600 text-sm line-clamp-3">
-                                {insight?.contents?.replace(/<[^>]*>/g, '')}
-                              </p>
-                            )}
-                            {insight?.datePublished && (
-                              <p className="text-sm text-gray-500 mt-3">
-                                {new Date(insight?.datePublished).toLocaleDateString()}
-                              </p>
-                            )}
+                  {results.insights.map((insight) => (
+                    <Link
+                      key={insight?.id}
+                      href={`/insights/${insight?.slug ?? ''}`}
+                      className="block h-full group"
+                    >
+                      <div className="relative h-fit bg-white rounded-tr-4xl rounded-bl-4xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+                        {insight?.image?.url && (
+                          <div className="relative h-48 w-full overflow-hidden">
+                            <Image
+                              src={getStrapiMedia(insight?.image?.url) || "/assets/jpg/insights.jpg"}
+                              alt={insight?.image?.alternativeText ?? insight?.title ?? ''}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
                           </div>
+                        )}
+                        <div className="p-6">
+                          {insight?.category && (
+                            <span className="inline-block px-3 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-full mb-3">
+                              {insight?.category}
+                            </span>
+                          )}
+                          <h3 className="text-xl font-bold text-nexia-dark-teal-100 mb-2 line-clamp-2 group-hover:text-nexia-light-teal-100 transition-colors">
+                            {insight?.title}
+                          </h3>
+                          {insight?.contents && (
+                            <p className="text-gray-600 text-sm line-clamp-3">
+                              {insight?.contents?.replace(/<[^>]*>/g, '')}
+                            </p>
+                          )}
+                          {insight?.datePublished && (
+                            <p className="text-sm text-gray-500 mt-3">
+                              {new Date(insight?.datePublished).toLocaleDateString()}
+                            </p>
+                          )}
                         </div>
-                      </Link>
-                    ))}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Load More */}
+                {hasMore && !loading && (
+                  <div className="flex justify-center mt-8">
+                    <button
+                      onClick={() => fetchResults(false)}
+                      className="px-6 py-2 bg-nexia-dark-teal-100 text-white rounded hover:bg-nexia-light-teal-100 transition-colors"
+                    >
+                      Load More
+                    </button>
                   </div>
-                </section>
-              )}
+                )}
+              </section>
             </div>
           )}
         </div>

@@ -249,12 +249,12 @@ function ContentCard({
             </p>
           )}
           {tagItems.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               {tagItems.map((t) => (
                 <Link
                   key={`${t.href}-${t.label}`}
                   href={t.href}
-                  className="px-2.5 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-full hover:bg-nexia-light-teal-200 transition-colors"
+                  className="whitespace-nowrap px-2.5 py-1 bg-nexia-light-teal-100 text-nexia-dark-teal-100 text-xs font-medium rounded-md hover:bg-nexia-light-teal-200 transition-colors"
                 >
                   {t.label}
                 </Link>

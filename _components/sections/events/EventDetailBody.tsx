@@ -5,12 +5,13 @@ import { Bounded } from "@/_components/bouned";
 import { getStrapiMedia, renderDescription } from "@/_lib/utils";
 import {
   LinkedInIcon,
-  InstagramIcon,
   TwitterIcon,
 } from "@/_components/atoms/icons";
 import { scrollAnimations } from "@/_lib/animations";
 import Link from "next/link";
 import Image from "next/image";
+import { getYouTubeVideoId } from "@/_lib/utils";
+
 
 type EventDetailBodyProps = {
   contents?: any[] | null;
@@ -18,6 +19,7 @@ type EventDetailBodyProps = {
   tags: Array<{ id: number; name: string; slug?: string }>;
   relatedMedia?: any[] | null;
   eventTitle?: string;
+  YoutubeLink?:string;
 };
 
 export default function EventDetailBody({
@@ -26,15 +28,14 @@ export default function EventDetailBody({
   relatedMedia,
   tags,
   eventTitle = "",
+  YoutubeLink
 }: EventDetailBodyProps) {
   const leftRef = useRef<HTMLDivElement | null>(null);
   const shareRef = useRef<HTMLDivElement | null>(null);
   const relatedEventsRef = useRef<HTMLDivElement | null>(null);
 
-  // Get current page URL for sharing
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-  // Social sharing functions
   const shareOnLinkedIn = () => {
     const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
     window.open(url, '_blank', 'width=600,height=400');
@@ -46,17 +47,7 @@ export default function EventDetailBody({
     window.open(url, '_blank', 'width=600,height=400');
   };
 
-  const shareOnInstagram = () => {
-    // Instagram doesn't support direct sharing via URL, so we'll copy to clipboard
-    navigator.clipboard.writeText(currentUrl)
-      .then(() => {
-        alert('Event link copied to clipboard! You can now share it on Instagram.');
-      })
-      .catch(() => {
-        // Fallback if clipboard fails
-        prompt('Copy this link to share on Instagram:', currentUrl);
-      });
-  };
+
 
 
   useEffect(() => {
@@ -80,6 +71,10 @@ export default function EventDetailBody({
     }
   }, []);
 
+    const videoId = getYouTubeVideoId(YoutubeLink ?? "");
+  
+
+
   return (
     <Bounded className="flex flex-col justify-between gap-10 py-8 lg:flex-row">
       <div ref={leftRef} className="w-full lg:w-7/10">
@@ -89,12 +84,10 @@ export default function EventDetailBody({
           />
         )}
 
-        {/* Fixed Related Media Section */}
         {Array.isArray(relatedMedia) && relatedMedia.length > 0 && (
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedMedia.map((media: any) => {
               const isImage = media?.mime?.startsWith("image/");
-              const isVideo = media?.mime?.startsWith("video/");
               const src = getStrapiMedia(media?.url);
 
               return (
@@ -111,26 +104,32 @@ export default function EventDetailBody({
                     />
                   )}
 
-                  {isVideo && (
-                    <video
-                      controls
-                      className="w-full h-full object-cover rounded-lg"
-                    >
-                      <source src={src ?? ""} type={media.mime} />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
                 </div>
               );
             })}
           </div>
         )}
 
+        {YoutubeLink && (
+  <div className="mt-6 aspect-video w-full overflow-hidden rounded-lg shadow-md">
+    <iframe
+      width="100%"
+      height="100%"
+        src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+      title="YouTube video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+      className="rounded-lg"
+    />
+  </div>
+)}
+
         <div className="mt-5 flex flex-wrap gap-2">
           {tags?.map((tag: any) => (
             <Link
               key={tag?.id}
-              href={`/tag/${tag.name}`}
+              href={`/tag/${encodeURIComponent(tag?.slug || tag?.name)}`}
               className="bg-nexia-light-teal-100 text-nexia-dark-teal-100 rounded px-2 py-1 text-xs hover:text-white transition-colors"
             >
               {tag?.name}
@@ -159,16 +158,8 @@ export default function EventDetailBody({
               <TwitterIcon               className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
  />
             </button>
-            <button
-              onClick={shareOnInstagram}
-              className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
-              aria-label="Share on Instagram"
-            >
-              <InstagramIcon               className="text-nexia-dark-teal-100 hover:text-nexia-light-teal-100 transition-colors"
- />
-            </button>
+           
             
-            {/* Optional Native Share Button */}
             
           </div>
         </div>
@@ -179,18 +170,25 @@ export default function EventDetailBody({
           <div className="mt-4 flex flex-col gap-4">
             {relatedEvents?.map((event) => (
               <Link href={`/events/${event.slug}`} key={event.id}>
-                <div className="flex gap-4 items-center rounded-xl border p-4 transition-colors hover:bg-gray-100">
-                  <div className="w-1/3">
-                    <Image 
+                <div   className="relative bg-white rounded-tr-4xl rounded-bl-4xl w-full shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 flex flex-col "
+>
+                 
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                          <Image
+                      
                       src={getStrapiMedia(event?.image?.url) ?? "/assets/jpg/profile-placeholder.svg"} 
-                      width={150} 
-                      height={150} 
                       alt={event?.title}
-                      className="w-full h-auto rounded-lg"
-                    />
-                  </div>
-                  <div className="w-2/3">
-                    <p className="text-nexia-dark-teal-100 font-bold text-lg">
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 400px"
+                          />
+                
+                        
+                        </div>
+                
+                  <div className="w-2/3 p-4">
+                    <p className="text-nexia-dark-teal-100 font-bold text-lg hover:text-nexia-light-teal-100 transition-colors">
                       {event?.title}
                     </p>
                     
@@ -205,7 +203,7 @@ export default function EventDetailBody({
                       ))}
                     </div>
 
-                    <div className="mt-2 text-nexia-gray text-sm">
+                    <div className="mt-2 text-nexia-gray text-sm truncate">
                       {event?.description}
                     </div>
                   </div>

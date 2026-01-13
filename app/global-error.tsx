@@ -22,6 +22,7 @@ export default function GlobalError({
           We&apos;re working on fixing it. Please try again or refresh the page.
         </p>
       
+      
       </body>
     </html>
   );

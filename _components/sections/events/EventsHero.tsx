@@ -13,39 +13,25 @@ type EventsHeroProps = {
 export default function EventsHero({
   title = "Events",
   subtitle = "Stay updated on the latest events and activities happening in our community.",
-  backgroundImage = "/assets/jpg/events.jpg",
+  backgroundImage = "/assets/webp/pexels-lucianphotography-3566187.webp",
 }: EventsHeroProps) {
-  const heroRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!heroRef.current || !contentRef.current) return;
-
+    if (!contentRef.current) return;
     animations.fadeInUp(contentRef.current, { delay: 0.2 });
-
-    const bgImage = heroRef.current.querySelector("img");
-    if (bgImage) {
-      animations.parallax(bgImage, -5);
-    }
   }, []);
 
   return (
-    <div
-      ref={heroRef}
-      className="
+    <div     className="
         relative flex items-center lg:items-end 
-        lg:h-[70vh] 
-        bg-cover bg-center bg-no-repeat 
-        transition-all duration-500 ease-out
-      "
-      style={{
-        backgroundImage: "url('/assets/jpg/events.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+        bg-white
+        lg:h-[70vh]
+        lg:bg-[url('/assets/webp/pexels-lucianphotography-3566187.webp')]
+        lg:bg-cover lg:bg-center lg:bg-no-repeat
+        transition-none
+      ">
       <link rel="preload" href={backgroundImage} as="image" />
-
 
       <div
         ref={contentRef}

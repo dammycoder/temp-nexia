@@ -1,18 +1,18 @@
 import React from "react";
 import type { Metadata } from "next";
-import { HeroSection, ServiceContent, HowWeCanHelpSection } from "@/_components/sections/service-slug";
+import { HeroSection, ServiceContent } from "@/_components/sections/service-slug";
 import { strapiFetch } from "@/_lib/strapi";
 import { notFound } from "next/navigation";
+import { ContactSection } from "@/_components/sections/home";
+
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-  const serviceData = await fetchServiceBySlug(params.slug);
+  const { slug } = await params;
+  const serviceData = await fetchServiceBySlug(slug);
 
   if (!serviceData) {
-    return {
-      title: "Service Not Found | Nexia Agbo Abel & Co",
-      robots: { index: false, follow: false },
-    };
+    notFound()
   }
 
   const title = `${serviceData.title} | Services | Nexia Agbo Abel & Co`;
@@ -38,31 +38,30 @@ export async function generateMetadata(
   };
 }
 
-
 const fetchServiceBySlug = async (slug: string) => {
   const response = await strapiFetch<{
     data: Array<{
       id: number;
-        title: string;
-        description: string;
+      title: string;
+      description: string;
+      slug: string;
+      chair: {
+        id: number;
+        image: { data: { attributes: { url: string } } };
+        name: string;
+        position: string;
         slug: string;
-        chair: {
-          id: number;
-          image: { data: { attributes: { url: string } } };
-          name: string;
-          position: string;
-          slug:string;
-        };
-        info: Array<{
+      };
+      info: Array<{
+        id: number;
+        title: string;
+        content: string;
+        subItems: Array<{
           id: number;
           title: string;
           content: string;
-          subItems: Array<{
-            id: number;
-            title: string;
-            content: string;
-          }>;
         }>;
+      }>;
 
     }>;
   }>("/api/services", {
@@ -88,9 +87,9 @@ const fetchServiceBySlug = async (slug: string) => {
 };
 
 
-export default async function ServicePage({ params }: { params: { slug: string } }) {
-    const serviceData = await fetchServiceBySlug(params.slug);
-  
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const serviceData = await fetchServiceBySlug(slug);
   if (!serviceData) {
     notFound();
   }
@@ -108,9 +107,10 @@ export default async function ServicePage({ params }: { params: { slug: string }
 
   return (
     <section className="">
-        <HeroSection data={service}/>
-<ServiceContent service={service} />
-      <HowWeCanHelpSection />
+      <HeroSection data={service} />
+      <ServiceContent service={service} />
+      <ContactSection />
+
     </section>
   );
 };

@@ -14,6 +14,7 @@ type EventData = {
   category: string;
   contents: any[];
   datePublished: string;
+  YoutubeLink?:string
   image: { url: string };
   tags: Array<{
     id: number;
@@ -64,9 +65,9 @@ async function fetchEventBySlug(slug: string) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> } // Fix: Accept Promise
 ): Promise<Metadata> {
-  const {slug} = await params;
+  const { slug } = await params; // Fix: Await the Promise
   const eventData = await fetchEventBySlug(slug);
 
   if (!eventData) {
@@ -99,7 +100,9 @@ export async function generateMetadata(
   };
 }
 
-const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
+
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) { 
+  
   const {slug} = await params;
   const eventData = await fetchEventBySlug(slug);
 
@@ -120,13 +123,13 @@ const Page = async({params}:Readonly<{ params: {slug:string}}>) =>{
         <EventDetailBody 
           relatedEvents={eventData?.relatedEvents?.events}
           contents={eventData?.contents}
-          relatedMedia={relatedMedia} // Pass the correct relatedMedia
+          relatedMedia={relatedMedia} 
           tags={eventData?.tags}
-          eventTitle={eventData?.title} // Add eventTitle for sharing
+          eventTitle={eventData?.title} 
+          YoutubeLink={eventData?.YoutubeLink}
         />
       </div>
   );
 }
 
-export default Page;
 export const dynamic = "force-dynamic";

@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./global.css";
 import Footer from "@/_components/organisms/o-footer";
+import { Toaster } from "@/components/ui/sonner"
+
 
 import { effraRegular, effraLight, effraBold, taho } from "@/fonts";
 import HeaderWrapper from "@/_components/organisms/o-header/HeaderWrapper";
@@ -37,6 +39,12 @@ export const metadata: Metadata = {
     "independent firms",
     "auditing",
     "business advisory",
+    "corporate support services",
+    "advisory services",
+    "audit",
+    "tax",
+    "Nexia agbo abel and co",
+
   ],
   metadataBase: new URL("https://nexia.ng"),
   referrer: "origin-when-cross-origin",
@@ -50,7 +58,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://nexia.ng/_next/image?url=%2Fassets%2Fpng%2Flogo.png&w=256&q=100",
         width: 1200,
         height: 630,
         alt: "Nexia Global Network",
@@ -78,11 +86,21 @@ export default function RootLayout({
         {children}
 
         <Footer />
+          <Toaster richColors position="top-right" />
 
         <Script
-          src="https://cookiechimp.com/widget/VWGtgDZ.js"
+          src="https://cookiechimp.com/widget/nNDtNdN.js"
           strategy="beforeInteractive"
         />
+         <Script id="clarity-script" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+          `}
+        </Script>
       </body>
     </html>
   );

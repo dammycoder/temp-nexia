@@ -5,10 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { strapiFetch } from "@/_lib/strapi";
 import { getStrapiMedia } from "@/_lib/utils";
+import { notFound } from 'next/navigation'
 
-interface Props {
-  params: { slug: string };
-}
 
 export interface StrapiImageFormat {
   name: string;
@@ -32,6 +30,7 @@ const fetchLeadershipBySlug = async (slug: string) => {
       bio: string;
       position: string;
       phone: string;
+      order:number;
       expertise: Array<{ id: number; title: string }>;
       qualifications: Array<{ id: number; title: string }>;
       image: {
@@ -76,43 +75,43 @@ const fetchLeadershipBySlug = async (slug: string) => {
 };
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-    const {slug} = await params;
+  const { slug } = await params;
   const leadershipData = await fetchLeadershipBySlug(slug);
   const leadership = leadershipData;
 
   if (!leadership) {
-    return {
-      title: "Leadership Not Found",
-    };
+    notFound()
   }
 
   return {
-    title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-    description: leadership.bio || undefined,
-    alternates: { canonical: `https://nexia.ng/about/leadership/${params.slug}` },
+    title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+    description: leadership?.bio || undefined,
+    alternates: { canonical: `https://nexia.ng/about/leadership/${slug}` },
     openGraph: {
-      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-      description: leadership.bio || undefined,
-      url: `https://nexia.ng/about/leadership/${params.slug}`,
+      title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+      description: leadership?.bio || undefined,
+      url: `https://nexia.ng/about/leadership/${slug}`,
       type: "profile",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${leadership.name} | Leadership Profile | Nexia Agbo Abel & Co`,
-      description: leadership.bio || undefined,
+      title: `${leadership?.name} | Leadership Profile | Nexia Agbo Abel & Co`,
+      description: leadership?.bio || undefined,
     },
   };
 }
 
-export default async function LeadershipProfile({params}:Readonly<{ params: {slug:string}}>) {
-  const {slug} = await params;
+
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) { 
+  
+  const { slug } = await params;
 
   const leadershipData = await fetchLeadershipBySlug(slug);
 
   if (!leadershipData) {
-    return <div>Leadership not found</div>;
+    return notFound()
   }
 
   const leadership = leadershipData;
@@ -130,7 +129,7 @@ export default async function LeadershipProfile({params}:Readonly<{ params: {slu
                 getStrapiMedia(leadership?.image?.url) ??
                 "/assets/jpg/profile-placeholder.svg"
               }
-              alt={leadership.name}
+              alt={leadership?.name}
               width={180}
               height={180}
               sizes="(max-width: 768px) 100vw, 180px"
@@ -140,7 +139,7 @@ export default async function LeadershipProfile({params}:Readonly<{ params: {slu
 
           <div className="flex flex-col gap-2 lg:ml-5">
             <p className="text-nexia-light-teal-100 text-3xl md:text-2xl lg:text-5xl">
-              {leadership.name}
+              {leadership?.name}
             </p>
             <Link
               href={`mailto:${leadership?.email}`}

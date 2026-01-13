@@ -4,13 +4,13 @@ import * as React from "react";
 import Image from "next/image";
 import { Bounded } from "@/_components/bouned";
 import { useEffect, useRef } from "react";
-import { animations, scrollAnimations  } from "@/_lib/animations"; // <-- use animations.staggerIn
+import { animations, scrollAnimations } from "@/_lib/animations"; // <-- use animations.staggerIn
 
 const servicesData = [
-  { id: 1, title: "Corporate Support Services", image: "/assets/jpg/css.jpg" },
-  { id: 2, title: "Tax Services", image: "/assets/jpg/tax.jpg" },
-  { id: 3, title: "Audit & Assurance Services", image: "/assets/jpg/audit.jpg" },
-  { id: 4, title: "Advisory Services", image: "/assets/jpg/advisory.jpg" },
+  { id: 1, title: "Corporate Support Services", image: "/assets/webp/pexels-fauxels-3183172.webp" },
+  { id: 2, title: "Tax Services", image: "/assets/webp/pexels-n-voitkevich-6863332.webp" },
+  { id: 3, title: "Advisory Services", image: "/assets/webp/collaborating-project-modern-office-setting_274679-52976.webp" },
+  { id: 4, title: "Audit & Assurance Services", image: "/assets/webp/clipboard-with-text-audit-wood-desk_118454-5574.webp" },
 ];
 
 const OurServicesSection = () => {
@@ -20,7 +20,7 @@ const OurServicesSection = () => {
 
 
   useEffect(() => {
-    if (servicesRef.current || !titleRef.current ) {
+    if (servicesRef.current || !titleRef.current) {
 
       scrollAnimations.onScroll(
         titleRef.current,
@@ -39,7 +39,7 @@ const OurServicesSection = () => {
           trigger: servicesRef.current,
           start: "top 80%",
           end: "bottom 20%",
-          toggleActions: "play none none", 
+          toggleActions: "play none none",
           once: true,
 
         },
@@ -54,30 +54,40 @@ const OurServicesSection = () => {
           <h2 className="text-2xl font-bold text-white" ref={titleRef}>Our Services</h2>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {servicesData.map((service, i) => (
             <div
               key={service.id}
               ref={(el) => {
                 if (el) cardRefs.current[i] = el;
               }}
-              className="relative overflow-hidden rounded-4xl hover:rounded-tl-none hover:rounded-br-none group opacity-0 translate-y-8"
+              className="relative overflow-hidden rounded-4xl hover:rounded-tl-none hover:rounded-br-none group opacity-0 translate-y-8 transition-all duration-500"
             >
-              <div className="relative h-100 w-full">
+              {/* Fixed height image container */}
+              <div className="relative w-full h-[400px] sm:h-[350px] md:h-[380px] lg:h-[400px] xl:h-[420px]">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  className="object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw,
+                 (max-width: 1024px) 50vw,
+                 (max-width: 1280px) 33vw,
+                 25vw"
                 />
               </div>
-              <div className="absolute inset-0 flex p-4 bg-black/20 transition-all duration-300 group-hover:bg-black/50">
-                <h3 className="text-3xl text-white">{service.title}</h3>
+
+              {/* Overlay */}
+              <div className="absolute inset-0 flex items-end p-4 bg-black/40 transition-all duration-300 group-hover:bg-black/50">
+                <h3 className="text-2xl md:text-3xl text-white font-semibold leading-snug">
+                  {service.title}
+                </h3>
               </div>
             </div>
           ))}
         </div>
+
+
       </Bounded>
     </div>
   );

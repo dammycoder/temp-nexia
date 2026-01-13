@@ -7,13 +7,15 @@ import {
   MainServicesSection,
   WhatTheySaySection,
   RelatedInsightsSection,
-  HowWeCanHelpSection,
 } from "@/_components/sections/services";
+import {ContactSection} from "@/_components/sections/home";
+
 import { strapiFetch } from "@/_lib/strapi";
 
 export const metadata: Metadata = {
   title:
     "Services | Nexia Agbo Abel & Co - Global Network of Accounting & Consultant Firms",
+    description:"Specialists work with you on a wide range of issues from audit, tax and advisory, including legal services, delivered through a proactive, partner-led approach."
 };
 
 
@@ -113,7 +115,7 @@ const ServicesPage = async () => {
       <CaseStudySection  data={page?.capabilities?.featuredInsight} />
       <WhatTheySaySection data={page?.capabilities?.testimonials} />
         {page?.capabilities?.insights && <RelatedInsightsSection insights={page?.capabilities?.insights}/>}
-      <HowWeCanHelpSection />
+        <ContactSection />
     </section>
   );
 };

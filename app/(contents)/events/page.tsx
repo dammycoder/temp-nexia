@@ -37,14 +37,6 @@ const eventPage = await strapiFetch<{
             datePublished: string;
             category: string;
             description: string;
-            video?: {
-              data: {
-                attributes: {
-                  url: string;
-                  alternativeText?: string;
-                };
-              } | null;
-            };
             slug: string;
 
         }>;
@@ -60,9 +52,6 @@ const eventPage = await strapiFetch<{
                 image: {
                   fields: ['url', 'alternativeText']
                 },
-                video: {
-                  fields: ['url', 'alternativeText']
-                },
                 tags: {
                   populate: "*"
                 },
@@ -76,7 +65,6 @@ const eventPage = await strapiFetch<{
   });
 
   const eventsData = eventPage?.data;
-
 
   
   return (
