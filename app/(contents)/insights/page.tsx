@@ -63,9 +63,7 @@ const InsightsPage = async () => {
     query: {
       populate: ["usefulLinks"],
     },
-  });
-
-  
+  });  
 
   const usefulLinks = globalData?.data?.usefulLinks || [];
 
