@@ -65,6 +65,11 @@ const InsightsPage = async () => {
     },
   });  
 
+
+
+
+  
+
   const usefulLinks = globalData?.data?.usefulLinks || [];
 
   const insights = await strapiFetch<{ data: Insight[] }>("/api/insights", {
