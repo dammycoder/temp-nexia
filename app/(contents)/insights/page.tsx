@@ -97,4 +97,4 @@ const InsightsPage = async () => {
 };
 
 export default InsightsPage;
-
+export const revalidate = 60;
